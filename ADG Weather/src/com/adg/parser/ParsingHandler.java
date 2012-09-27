@@ -1,10 +1,14 @@
 package com.adg.parser;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.util.Log;
+import com.adg.object.*;
 
 public class ParsingHandler {
 	//array
@@ -45,6 +49,8 @@ public class ParsingHandler {
 	private static final String TYPE = "type";
 	
 	private String url = "";
+	ArrayList<Weather> current = new ArrayList<Weather>();
+	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
 	
 	public ParsingHandler() {
 		
@@ -105,6 +111,8 @@ public class ParsingHandler {
 						JSONObject d = desc.getJSONObject(j);
 						String valueFive = d.getString(VALUE);
 					}
+					Weather curr = new Weather();
+					
 				}
 				
 				//current
@@ -141,5 +149,9 @@ public class ParsingHandler {
 				e.printStackTrace();
 			}			
 		}
+	}
+	public Bundle getBundle(int position) {
+		Bundle bundle = new Bundle();
+		return bundle;
 	}
 }
