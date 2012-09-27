@@ -23,7 +23,7 @@ public class MainActivity extends Activity implements LocationListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_screen);
+        setContentView(R.layout.main_activity);
         
         tv = (TextView) findViewById(R.id.textView1);
         
@@ -36,6 +36,9 @@ public class MainActivity extends Activity implements LocationListener {
         
         
         if (location != null) {
+        	Bundle bun = location.getExtras();
+        	String zip = bun.getString("zip");
+        	
             System.out.println("Provider: " + provider + " has been selected.");
             onLocationChanged(location);
           } else {
@@ -65,7 +68,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
       int lat = (int) (location.getLatitude());
       int lng = (int) (location.getLongitude());
-      tv.setText("Latitude: "+String.valueOf(lat)+ "\nLongitude: "+String.valueOf(lng));
+      tv.setText("Latitude: "+lat+ "\nLongitude: "+lng);
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
