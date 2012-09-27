@@ -72,7 +72,40 @@ public class ParsingHandler {
 				JSONArray current = data.getJSONArray(CURRENT);
 				JSONArray weather = data.getJSONArray(WEATHER);
 				JSONArray request = data.getJSONArray(REQUEST);
-				JSONArray desc = data.getJSONArray(DESC);
+				
+				//request
+				for(int i = 0; i < request.length(); i++){
+					JSONObject r = request.getJSONObject(i);
+					String query = r.getString(QUERY);
+					String type = r.getString(TYPE);
+				}
+				
+				//5-day
+				for(int i = 0; i < weather.length(); i++){
+					JSONObject w = weather.getJSONObject(i);
+					
+					//special
+					String date = w.getString(DATE);
+					String maxF = w.getString(MAXF);
+					String minF = w.getString(MINF);
+					String maxC = w.getString(MAXC);
+					String minC = w.getString(MINC);
+					
+					//shared
+					String precipFive = w.getString(PRECIPMM);
+					String codeFive = w.getString(WEATHERCODE);
+					String windPointFive = w.getString(WINDIR);
+					String windDegreeFive = w.getString(WINDEGREE);
+					String kmphFive = w.getString(KMPH);
+					String mphFive = w.getString(MPH);
+					
+					//desc
+					JSONArray desc = w.getJSONArray(DESC);
+					for(int j = 0; j < desc.length(); j++){
+						JSONObject d = desc.getJSONObject(j);
+						String valueFive = d.getString(VALUE);
+					}
+				}
 				
 				//current
 				for(int i = 0; i < current.length() ; i++){
@@ -88,11 +121,20 @@ public class ParsingHandler {
 					String visivility = c.getString(VISIBILITY);
 					
 					//shared
-					String precip = c.getString(PRECIPMM);
-					String code = c.getString(WEATHERCODE);
+					String precipCurr = c.getString(PRECIPMM);
+					String codeCurr = c.getString(WEATHERCODE);
+					String windPointCurr = c.getString(WINDIR);
+					String windDegreeCurr = c.getString(WINDEGREE);
+					String kmphCurr = c.getString(KMPH);
+					String mphCurr = c.getString(MPH);
 					
+					//desc
+					JSONArray desc = c.getJSONArray(DESC);
+					for(int j = 0; j < desc.length(); j++){
+						JSONObject d = desc.getJSONObject(j);
+						String valueCurr = d.getString(VALUE);
+					}
 				}
-				
 				
 				
 			} catch (JSONException e) {
