@@ -17,6 +17,13 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class JSONparser {
+	/*
+	 * String key = "845adebec4142346121409";
+	 * String longLat = "http://free.worldweatheronline.com/feed/weather.ashx?q=[lat],[lon]&format=json&num_of_days=5&key=";
+	 * String zip ="http://free.worldweatheronline.com/feed/weather.ashx?q=[Zipcode]&format=json&num_of_days=5&key=";
+	 * String city = "http://free.worldweatheronline.com/feed/weather.ashx?q=[city]%2c+[state],[contry]&format=json&num_of_days=5&key=";
+	 * String ip = "http://free.worldweatheronline.com/feed/weather.ashx?q=[ip]&format=json&num_of_days=5&key=";
+	 */
 	static InputStream inputStream = null;
 	static JSONObject jObj = null;
 	static String json = "";
