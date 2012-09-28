@@ -9,31 +9,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            style="@style/myPadding"
             android:layout_alignParentTop="true"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
             android:id="@+id/weatherIcon"
+           	style="@style/myPadding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/location"
-            android:src="@drawable/ic_launcher" />
-
+            android:src="@drawable/lightning128" />
+
         <TextView
             android:id="@+id/temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/maxTextView"
             android:layout_alignTop="@+id/weatherIcon"
+            style="@style/myPadding"
             android:layout_toRightOf="@+id/weatherIcon"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="F"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="90sp" />
 
         <TextView
             android:id="@+id/descrip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/myPadding"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/weatherIcon"
             android:text="Medium Text"
@@ -43,6 +49,7 @@
             android:id="@+id/precip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/myPadding"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/descrip"
             android:text="Medium Text"
@@ -52,6 +59,7 @@
             android:id="@+id/windSpeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/myPadding"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/precip"
             android:text="Medium Text"
@@ -61,9 +69,37 @@
             android:id="@+id/button5Day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                        android:background="@null"
             android:layout_alignParentLeft="true"
+            style="@style/myPadding"
             android:layout_below="@+id/windSpeed"
+            android:background="@null"
             android:text="@string/fiveday" />
+
+        <TextView
+            android:id="@+id/maxTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/descrip"
+            android:layout_alignLeft="@+id/temp"
+            android:text="MAX"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/minTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/descrip"
+            android:layout_toRightOf="@+id/maxTextView"
+            android:text="MIN"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/gps_icon"
+            android:text="Button" />
 
     </RelativeLayout>

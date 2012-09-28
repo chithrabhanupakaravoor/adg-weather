@@ -19,7 +19,7 @@ public class ParsingHandler {
 	private static final String DESC = "weatherDesc";
 	
 	//common
-	private static final String PRECIPMM = "percipMM";
+	private static final String PRECIPMM = "precipMM";
 	private static final String WINDIR = "winddir16Point";
 	private static final String WINDEGREE = "winddirDegree";
 	private static final String KMPH = "windspeedKmph";
@@ -30,7 +30,7 @@ public class ParsingHandler {
 	// under current
 	private static final String CLOUDCOVER = "cloudcover";
 	private static final String HUMIDITY = "humidity";
-	private static final String TIME = "ovservation_time";
+	private static final String TIME = "observation_time";
 	private static final String PRESSURE = "pressure";
 	private static final String C = "temp_C";
 	private static final String F = "temp_F";
