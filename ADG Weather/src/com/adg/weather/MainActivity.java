@@ -1,8 +1,12 @@
 package com.adg.weather;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import com.adg.object.Weather;
+import com.adg.parser.ParsingHandler;
 
 import android.location.Address;
 import android.location.Criteria;
@@ -28,7 +32,11 @@ public class MainActivity extends Activity implements LocationListener {
 	private String provider;
 	private Context myContext;
 	public String addressText = "";
-
+	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
+	Weather curr = new Weather();
+	long lat;
+	long lng;
+	ParsingHandler parsingHandler;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +61,9 @@ public class MainActivity extends Activity implements LocationListener {
 		} else {
 			tv.setText("Location not available");
 		}
-        
+		
 		ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
 		rgt.execute(location, null, null);
-        
     }
 
     /* Request updates at startup */
@@ -74,8 +81,8 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     public void onLocationChanged(Location location) {
-      long lat = (long) (location.getLatitude());
-      long lng = (long) (location.getLongitude());
+      lat = (long) (location.getLatitude());
+      lng = (long) (location.getLongitude());
       tv.setText("Latitude: "+lat+ "\nLongitude: "+lng);
     }
 
@@ -149,6 +156,13 @@ public class MainActivity extends Activity implements LocationListener {
              
              
          }
+         // parsing the Data
+         	String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
+			String begining = "http://free.worldweatheronline.com/feed/weather.ashx?q=";//[lat],[lon]
+			String url = begining + lat + "," + lng + key;
+			parsingHandler = new ParsingHandler(url);
+			fiveDay = parsingHandler.getFiveDay();
+			curr = parsingHandler.getCurr();
          return null;
      }
 		
