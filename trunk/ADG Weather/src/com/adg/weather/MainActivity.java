@@ -159,7 +159,7 @@ public class MainActivity extends Activity implements LocationListener {
          // parsing the Data
          	String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
 			String begining = "http://free.worldweatheronline.com/feed/weather.ashx?q=";//[lat],[lon]
-			String url = begining + lat + "," + lng + key;
+			String url = begining + lat + ".00," + lng+".00" + key;
 			parsingHandler = new ParsingHandler(url);
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
