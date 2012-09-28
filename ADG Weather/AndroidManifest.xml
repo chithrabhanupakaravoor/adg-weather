@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FiveDayForcastActivity"
+            android:label="@layout/five_day_list">
+            
+        </activity>
     </application>
 
 </manifest>
