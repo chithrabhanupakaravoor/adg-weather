@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class FiveDayForcastActvity extends Activity{
 		
 		@Override
 		protected Object doInBackground(Object... params) {
+			Log.i("FiveDayForcast", "url: "+url);
 			ph = new ParsingHandler(url);
 			fiveDay = ph.getFiveDay();
 			return null;
