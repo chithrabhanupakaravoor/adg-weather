@@ -210,4 +210,22 @@ public class ParsingHandler {
 		bundle.putString("Mph", curr.getMph());
 		return bundle;
 	}
+
+	public Weather getCurr() {
+		return curr;
+	}
+
+	public void setCurr(Weather curr) {
+		this.curr = curr;
+	}
+
+	public ArrayList<Weather> getFiveDay() {
+		return fiveDay;
+	}
+
+	public void setFiveDay(ArrayList<Weather> fiveDay) {
+		this.fiveDay = fiveDay;
+	}
+	
+	
 }
