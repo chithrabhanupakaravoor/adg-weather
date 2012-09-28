@@ -27,6 +27,7 @@ public class FiveDayForcastActvity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.five_day_list);
+		
 		dw = new DownloadWeather(getApplicationContext());
 		dw.execute((Integer)null);
 	}
