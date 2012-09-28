@@ -3,6 +3,7 @@ package com.adg.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class WeatherAdapter extends BaseAdapter {
 	public WeatherAdapter(Context c, ArrayList<Weather> f){
 		this.context = c;
 		this.fiveDay = f;
+		Log.i("WeatherAdapter", "Weather adater is being called");
 	}
 	public int getCount() {
 		return fiveDay.size();
