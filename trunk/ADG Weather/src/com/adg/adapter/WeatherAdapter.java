@@ -51,6 +51,9 @@ public class WeatherAdapter extends BaseAdapter {
 		temp.setText(fiveDay.get(arg0).getMaxC() +"\u00B0 C- " + fiveDay.get(arg0).getMinC()+ "\u00B0 C");
 		val.setText(fiveDay.get(arg0).getValue());
 		
+		Log.i("WeatherAdapter", fiveDay.get(arg0).getDate());
+		Log.i("WeatherAdapter", fiveDay.get(arg0).getValue());
+		
 		return child;
 	}
 
