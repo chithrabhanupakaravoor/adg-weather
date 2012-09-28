@@ -1,0 +1,40 @@
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <EditText
+            android:id="@+id/cityState"
+            android:padding="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:ems="10" 
+            android:hint="@string/city">
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/zipcode"
+            android:padding="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/cityState"
+            android:layout_marginTop="14dp"
+            android:ems="10"
+            android:inputType="number" 
+            android:hint="@string/zip"/>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/zipcode"
+            android:layout_below="@+id/zipcode"
+            android:layout_marginRight="57dp"
+            android:layout_marginTop="42dp"
+            android:text="@string/find" />
+
+    </RelativeLayout>
