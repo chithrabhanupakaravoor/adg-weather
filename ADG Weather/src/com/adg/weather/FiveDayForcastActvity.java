@@ -49,6 +49,7 @@ public class FiveDayForcastActvity extends Activity{
 		protected Object doInBackground(Object... params) {
 			Log.i("FiveDayForcast", "url: "+url);
 			ph = new ParsingHandler(url);
+			ph.startParsing();
 			fiveDay = ph.getFiveDay();
 			return null;
 		}
