@@ -11,13 +11,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class FiveDayForcastActvity extends Activity{
 	
@@ -65,6 +59,7 @@ public class FiveDayForcastActvity extends Activity{
 			lv = (ListView) findViewById(R.id.fiveDayList);
 			rapter = new WeatherAdapter(getApplicationContext(), fiveDay);
 			lv.setAdapter(rapter);
+			Log.i("FiveDayForcast", "rapter set");
 		}
 		
 		@Override
