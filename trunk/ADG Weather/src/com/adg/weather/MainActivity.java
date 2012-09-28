@@ -22,6 +22,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,15 @@ public class MainActivity extends Activity implements LocationListener {
         myContext = getApplicationContext();
         
         tv = (TextView) findViewById(R.id.textView1);
+        
+        Button fiveDayButton = (Button) findViewById(R.id.button5Day);
+        
+        fiveDayButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0){
+				Intent in = new Intent(MainActivity.this, FiveDayForcastActvity.class);
+				startActivity(in);
+			}
+		});
         
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         
