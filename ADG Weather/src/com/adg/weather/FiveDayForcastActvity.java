@@ -95,7 +95,7 @@ public class FiveDayForcastActvity extends Activity{
 		TextView temp;
 
 		public View getView(int arg0, View arg1, ViewGroup arg2) {
-			child = getLayoutInflater().inflate(R.layout.five_day_list, null);
+			child = getLayoutInflater().inflate(R.layout.five_day_item, null);
 			val = (TextView) child.findViewById(R.id.valueText);
 			d = (TextView) child.findViewById(R.id.dateTextView);
 			temp = (TextView) child.findViewById(R.id.tempText);
