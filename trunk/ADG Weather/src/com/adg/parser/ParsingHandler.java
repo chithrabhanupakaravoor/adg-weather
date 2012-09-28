@@ -49,7 +49,7 @@ public class ParsingHandler {
 	private static final String TYPE = "type";
 	
 	private String url = "";
-	ArrayList<Weather> current = new ArrayList<Weather>();
+	Weather curr = new Weather();
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
 	
 	public ParsingHandler() {
@@ -91,6 +91,7 @@ public class ParsingHandler {
 					JSONObject w = weather.getJSONObject(i);
 					
 					//special
+					Weather five = new Weather();
 					String date = w.getString(DATE);
 					String maxF = w.getString(MAXF);
 					String minF = w.getString(MINF);
@@ -110,14 +111,27 @@ public class ParsingHandler {
 					for(int j = 0; j < desc.length(); j++){
 						JSONObject d = desc.getJSONObject(j);
 						String valueFive = d.getString(VALUE);
+						five.setValue(valueFive);
 					}
-					Weather curr = new Weather();
 					
+					five.setDate(date);
+					five.setPercip(precipFive);
+					five.setMaxC(maxC);
+					five.setMaxF(maxF);
+					five.setMinC(minC);
+					five.setWeatherCode(codeFive);
+					five.setWindPoint(windPointFive);
+					five.setWindDegree(windDegreeFive);
+					five.setKmph(kmphFive);
+					five.setMph(mphFive);
+					
+					fiveDay.add(five);
 				}
 				
 				//current
 				for(int i = 0; i < current.length() ; i++){
 					JSONObject c = current.getJSONObject(i);
+					
 					
 					//special
 					String cloudCover = c.getString(CLOUDCOVER);
@@ -141,7 +155,21 @@ public class ParsingHandler {
 					for(int j = 0; j < desc.length(); j++){
 						JSONObject d = desc.getJSONObject(j);
 						String valueCurr = d.getString(VALUE);
+						curr.setValue(valueCurr);
 					}
+					curr.setCloudcover(cloudCover);
+					curr.setHumidity(humidity);
+					curr.setTime(time);
+					curr.setPercip(precipCurr);
+					curr.setPressure(pressure);
+					curr.setC(tempC);
+					curr.setF(tempF);
+					curr.setVisibility(visivility);
+					curr.setWeatherCode(codeCurr);
+					curr.setWindPoint(windPointCurr);
+					curr.setWindDegree(windDegreeCurr);
+					curr.setKmph(kmphCurr);
+					curr.setMph(mphCurr);
 				}
 				
 				
@@ -150,8 +178,36 @@ public class ParsingHandler {
 			}			
 		}
 	}
-	public Bundle getBundle(int position) {
+	public Bundle getBundleFive(int position) {
 		Bundle bundle = new Bundle();
+		bundle.putString("Date", fiveDay.get(position).getDate());
+		bundle.putString("MaxC", fiveDay.get(position).getMaxC());
+		bundle.putString("MaxF", fiveDay.get(position).getMaxF());
+		bundle.putString("MinF", fiveDay.get(position).getMinC());
+		bundle.putString("MinC", fiveDay.get(position).getMinF());
+		bundle.putString("Code", fiveDay.get(position).getWeatherCode());
+		bundle.putString("Value", fiveDay.get(position).getValue());
+		bundle.putString("WindPoint", fiveDay.get(position).getWindPoint());
+		bundle.putString("WindDegree", fiveDay.get(position).getWindDegree());
+		bundle.putString("Kmph", fiveDay.get(position).getKmph());
+		bundle.putString("Mph", fiveDay.get(position).getMph());
+		return bundle;
+	}
+	public Bundle getBundleCurrent(){
+		Bundle bundle = new Bundle();
+		bundle.putString("CloudCover", curr.getCloudcover());
+		bundle.putString("Humidity", curr.getHumidity());
+		bundle.putString("Time", curr.getTime());
+		bundle.putString("Precip", curr.getPercip());
+		bundle.putString("TempC", curr.getC());
+		bundle.putString("TempF", curr.getF());
+		bundle.putString("Visibility", curr.getVisibility());
+		bundle.putString("Code", curr.getWeatherCode());
+		bundle.putString("Value", curr.getValue());
+		bundle.putString("WindPoint", curr.getWindPoint());
+		bundle.putString("WindDegree", curr.getWindDegree());
+		bundle.putString("Kmph", curr.getKmph());
+		bundle.putString("Mph", curr.getMph());
 		return bundle;
 	}
 }
