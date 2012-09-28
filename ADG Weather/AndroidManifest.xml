@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="FiveDayForcastActivity"
+            android:name="FiveDayForcastActvity"
             android:label="@layout/five_day_list">
             
         </activity>
