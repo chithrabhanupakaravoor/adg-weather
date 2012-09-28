@@ -58,6 +58,7 @@ public class MainActivity extends Activity implements LocationListener {
 	long lng;
 	ParsingHandler parsingHandler;
 	MessageHandler messageHandler;
+	Bundle urlBundle = new Bundle();
 	
 	
 	
@@ -83,7 +84,7 @@ public class MainActivity extends Activity implements LocationListener {
         fiveDayButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View arg0){
 				Intent in = new Intent(MainActivity.this, FiveDayForcastActvity.class);
-				
+				in.putExtras(urlBundle);
 				startActivity(in);
 			}
 		});
@@ -203,6 +204,7 @@ public class MainActivity extends Activity implements LocationListener {
 			String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
 			String begining = "http://free.worldweatheronline.com/feed/weather.ashx?q=";// [lat],[lon]
 			String url = begining + lat + ".00," + lng + ".00" + key;
+			urlBundle.putString("URL", url);
 			Log.i("URL", url);
 			parsingHandler = new ParsingHandler(url);
 			parsingHandler.startParsing();
