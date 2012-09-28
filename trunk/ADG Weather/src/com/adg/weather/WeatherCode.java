@@ -101,6 +101,66 @@ public class WeatherCode {
 		case 299:
 			desc = "Moderate rain at times";
 			break;
+		case 296:
+			desc = "Light rain";
+			break;
+		case 293:
+			desc = "Patchy light rain";
+			break;
+		case 284:
+			desc = "Heavy freezing drizzle";
+			break;
+		case 281:
+			desc = "Freezing drizzle";
+			break;
+		case 266:
+			desc = "Light drizzle";
+			break;
+		case 263:
+			desc = "Patchy light drizzle";
+			break;
+		case 260:
+			desc = "Freezing fog";
+			break;
+		case 248:
+			desc = "Fog";
+			break;
+		case 230:
+			desc = "Blizzard";
+			break;
+		case 227:
+			desc = "Blowing snow";
+			break;
+		case 200:
+			desc = "Thundery outbreaks in nearby";
+			break;
+		case 185:
+			desc = "Patchy freezing drizzle nearby";
+			break;
+		case 182:
+			desc = "Patchy sleet nearby";
+			break;
+		case 179:
+			desc = "Patchy snow nearby";
+			break;
+		case 176:
+			desc = "Patchy rain nearby";
+			break;
+		case 143:
+			desc = "Mist";
+			break;
+		case 122:
+			desc = "Overcast";
+			break;
+		case 119:
+			desc = "Cloudy";
+			break;
+		case 116:
+			desc = "Partly Cloudy";
+			break;
+		case 113:
+			desc = "Clear/Sunny";
+			break;
 			
 		}
 		
