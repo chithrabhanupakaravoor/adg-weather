@@ -1,10 +1,18 @@
 package com.adg.weather;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.Settings;
 import android.app.Activity;
 import android.content.Context;
@@ -15,15 +23,19 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements LocationListener {
 
-	private TextView tv;
+	public TextView tv;
 	private LocationManager locationManager;
 	private String provider;
+	private Context myContext;
+	public String addressText = "";
 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+    
+        myContext = getApplicationContext();
         
         tv = (TextView) findViewById(R.id.textView1);
         
@@ -35,19 +47,15 @@ public class MainActivity extends Activity implements LocationListener {
         Location location = locationManager.getLastKnownLocation(provider);
         
         
-        if (location != null) {
-        	Bundle bun = location.getExtras();
-        	String zip = bun.getString("zip");
-        	
-            System.out.println("Provider: " + provider + " has been selected.");
-            onLocationChanged(location);
-          } else {
-            tv.setText("Location not available");
-          }
+		if (location != null) {
+			System.out.println("Provider: " + provider + " has been selected.");
+			onLocationChanged(location);
+		} else {
+			tv.setText("Location not available");
+		}
         
-        		
-		
-		
+		ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
+		rgt.execute(location, null, null);
         
     }
 
@@ -66,8 +74,8 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     public void onLocationChanged(Location location) {
-      int lat = (int) (location.getLatitude());
-      int lng = (int) (location.getLongitude());
+      long lat = (long) (location.getLatitude());
+      long lng = (long) (location.getLongitude());
       tv.setText("Latitude: "+lat+ "\nLongitude: "+lng);
     }
 
@@ -93,4 +101,58 @@ public class MainActivity extends Activity implements LocationListener {
         getMenuInflater().inflate(R.menu.main_activity, menu);
         return true;
     }
+
+	// AsyncTask encapsulating the reverse-geocoding API. Since the geocoder API
+	// is blocked,
+	// we do not want to invoke it from the UI thread.
+	public class ReverseGeocodingTask extends AsyncTask<Location, Void, Void> {
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			
+			tv.setText(addressText);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
+
+		Context mContext;
+
+		public ReverseGeocodingTask(Context context) {
+			super();
+			mContext = context;
+		}
+
+		@Override
+     protected Void doInBackground(Location... params) {
+         Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+
+         Location loc = params[0];
+         List<Address> addresses = null;
+         try {
+             // Call the synchronous getFromLocation() method by passing in the lat/long values.
+             addresses = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+         if (addresses != null && addresses.size() > 0) {
+             Address address = addresses.get(0);
+             // Format the first line of address (if available), city, and country name.
+             addressText = String.format("%s, %s, %s",
+                     address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
+                     address.getLocality(),
+                     address.getCountryName());
+             
+             
+         }
+         return null;
+     }
+		
+		
+	}
+
 }
