@@ -20,7 +20,6 @@ public class WeatherAdapter extends BaseAdapter {
 	
 	Context context;
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
-	DateFinder df = new DateFinder();
 
 	public WeatherAdapter(Context c, ArrayList<Weather> f){
 		this.context = c;
@@ -32,22 +31,65 @@ public class WeatherAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int arg0) {
-		return null;
+		return arg0;
 	}
 
 	public long getItemId(int arg0) {
 		return 0;
 	}
 	
+	public String getMonth(String month) {
+		String month2;
+		
+		switch (Integer.parseInt(month)) {
+		case 1:
+			month2 = "January";
+			break;
+		case 2:
+			month2 = "February";
+			break;
+		case 3:
+			month2 = "March";
+			break;
+		case 4:
+			month2 = "April";
+			break;
+		case 5:
+			month2 = "May";
+			break;
+		case 6:
+			month2 = "June";
+			break;
+		case 7:
+			month2 = "July";
+			break;
+		case 8:
+			month2 = "August";
+			break;
+		case 9:
+			month2 = "September";
+			break;
+		case 10:
+			month2 = "October";
+			break;
+		case 11:
+			month2 = "November";
+			break;
+		case 12:
+			month2 = "December";
+			break;
+		default:
+			month2 = month;
+			break;
+		}
+		return month2;
+	}
+	
+	
 	View child;
 	TextView val;
 	TextView d;
 	TextView temp;
-	ImageView iv;
-	String weatherCode;
-	WeatherCode wc;
-	
-	
 
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,13 +97,28 @@ public class WeatherAdapter extends BaseAdapter {
 		val = (TextView) child.findViewById(R.id.valueText);
 		d = (TextView) child.findViewById(R.id.dateTextView);
 		temp = (TextView) child.findViewById(R.id.tempText);
-		iv = (ImageView) child.findViewById(R.id.fiveDayImage);
-		weatherCode = fiveDay.get(arg0).getWeatherCode();
-		wc = new WeatherCode(Integer.parseInt(weatherCode));
 		
-		d.setText(df.dayOfWeek(fiveDay.get(arg0).getDate()));
-		temp.setText(fiveDay.get(arg0).getMaxF() +"\u00B0 F- " + fiveDay.get(arg0).getMinF()+ "\u00B0 F");
+		String date = fiveDay.get(arg0).getDate();
+		String[] mdy = date.split("-");
+		String year = mdy[0];
+		String month = mdy[1];
+		String day = mdy[2];
+		String m1 = getMonth(month);
+		
+
+		DateFinder df = new DateFinder();
+		String dow = df.dayOfWeek(date);
+		
+		
+		d.setText(dow+", "+day+" "+m1+", "+year);
+		
+		temp.setText(fiveDay.get(arg0).getMaxF() +"\u00B0 F  /  " + fiveDay.get(arg0).getMinF()+ "\u00B0 F");
 		val.setText(fiveDay.get(arg0).getValue());
+		
+		
+		ImageView iv = (ImageView) child.findViewById(R.id.fiveDayImage);
+		int weatherCode = Integer.parseInt(fiveDay.get(arg0).getWeatherCode());
+		WeatherCode wc = new WeatherCode(weatherCode);
 		iv.setImageResource(wc.getDrawableIcon());
 		
 		Log.i("WeatherAdapter", fiveDay.get(arg0).getDate());

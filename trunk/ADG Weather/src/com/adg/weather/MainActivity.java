@@ -36,8 +36,15 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements LocationListener {
 
+	//shared prefs
 	public static final String PREF_FILE = "ADGWeatherPrefs";
 	private SharedPreferences sharedPreferences;
+	
+	public static final String API_KEY = "845adebec4142346121409";
+	public static final String URL_1 = "http://free.worldweatheronline.com/feed/weather.ashx?q=";
+	public static final String URL_2 = "&format=json&num_of_days=5&key=";
+	
+	
 	
 	TextView descText;
 	TextView cityText;
@@ -96,10 +103,6 @@ public class MainActivity extends Activity implements LocationListener {
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
         
-        searchQueryEditText = (EditText) findViewById(R.id.editText1);
-        //searchQueryEditText.setVisibility(View.GONE);
-        
-        
         //hide everything while loading
         hideViews();
         
@@ -150,7 +153,8 @@ public class MainActivity extends Activity implements LocationListener {
 			}
 		});
      
-		
+        ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
+		rgt.execute(location, null, null);
 		
     }
 
@@ -205,6 +209,7 @@ public class MainActivity extends Activity implements LocationListener {
     	windSpeedText.setVisibility(View.GONE);
     	maxText.setVisibility(View.GONE);
     	minText.setVisibility(View.GONE);
+    	iv.setVisibility(View.GONE);
     	
     }
     
@@ -216,7 +221,7 @@ public class MainActivity extends Activity implements LocationListener {
     	windSpeedText.setVisibility(View.VISIBLE);
     	maxText.setVisibility(View.VISIBLE);
     	minText.setVisibility(View.VISIBLE);
-    	
+    	iv.setVisibility(View.VISIBLE);
     	
     }
     
@@ -277,9 +282,9 @@ public class MainActivity extends Activity implements LocationListener {
 
 			}
 			// parsing the Data
-			String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
-			String begining = "http://free.worldweatheronline.com/feed/weather.ashx?q=";// [lat],[lon]
-			String url = begining + lat + ".00," + lng + ".00" + key;
+			//String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
+			
+			String url = URL_1 + lat + ".00," + lng + ".00" + URL_2+API_KEY;
 			urlBundle.putString("URL", url);
 			Log.i("URL", url);
 			parsingHandler = new ParsingHandler(url);
@@ -310,8 +315,8 @@ public class MainActivity extends Activity implements LocationListener {
 			windSpeedText.setText("Wind Speed:"+curr.getMph() + " mph");
 			//maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
 			//minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
-			maxText.setText("Max: "+maxF);
-			minText.setText("  Min: "+minF);
+			maxText.setText("Max: "+maxF + "\u00B0 F  /");
+			minText.setText("  Min: "+minF + "\u00B0 F");
 			
 			String weatherCode = curr.getWeatherCode();
 			//Log.i("WEATHER CODE", ""+weatherCode);

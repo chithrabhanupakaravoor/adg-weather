@@ -45,7 +45,7 @@
             android:layout_below="@+id/location"
             android:layout_marginLeft="5dp"
             android:src="@drawable/lightning128" />
-
+
         <TextView
             android:id="@+id/descrip"
             style="@style/myPadding"
@@ -54,7 +54,8 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/weatherIcon"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/precip"
@@ -117,29 +118,16 @@
             android:background="@drawable/largeblackbutton"
             android:text="@string/fiveday"
             android:textColor="@color/White" />
-
+
         <ImageButton
             android:id="@+id/searchButton"
             android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/largeblackbutton"
             android:src="@drawable/ic_action_search"
             android:text="Button" />
-
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/button5Day"
-            android:layout_alignLeft="@+id/gpsButton"
-            android:layout_alignRight="@+id/saveLocButton"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="14dp"
-            android:ems="10" >
-
-            <requestFocus />
-        </EditText>
 
     </RelativeLayout>

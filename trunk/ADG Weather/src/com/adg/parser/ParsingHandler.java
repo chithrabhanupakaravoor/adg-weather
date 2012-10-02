@@ -119,6 +119,7 @@ public class ParsingHandler {
 					five.setMaxC(maxC);
 					five.setMaxF(maxF);
 					five.setMinC(minC);
+					five.setMinF(minF);
 					five.setWeatherCode(codeFive);
 					five.setWindPoint(windPointFive);
 					five.setWindDegree(windDegreeFive);
@@ -184,8 +185,8 @@ public class ParsingHandler {
 		bundle.putString("Precip", fiveDay.get(position).getPercip());
 		bundle.putString("MaxC", fiveDay.get(position).getMaxC());
 		bundle.putString("MaxF", fiveDay.get(position).getMaxF());
-		bundle.putString("MinF", fiveDay.get(position).getMinC());
-		bundle.putString("MinC", fiveDay.get(position).getMinF());
+		bundle.putString("MinF", fiveDay.get(position).getMinF());
+		bundle.putString("MinC", fiveDay.get(position).getMinC());
 		bundle.putString("Code", fiveDay.get(position).getWeatherCode());
 		bundle.putString("Value", fiveDay.get(position).getValue());
 		bundle.putString("WindPoint", fiveDay.get(position).getWindPoint());
