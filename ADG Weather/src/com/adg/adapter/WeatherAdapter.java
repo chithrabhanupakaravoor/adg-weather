@@ -44,6 +44,8 @@ public class WeatherAdapter extends BaseAdapter {
 	TextView d;
 	TextView temp;
 	ImageView iv;
+	String weatherCode;
+	WeatherCode wc;
 
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,11 +54,11 @@ public class WeatherAdapter extends BaseAdapter {
 		d = (TextView) child.findViewById(R.id.dateTextView);
 		temp = (TextView) child.findViewById(R.id.tempText);
 		iv = (ImageView) child.findViewById(R.id.fiveDayImage);
-		String weatherCode = fiveDay.get(arg0).getWeatherCode();
-		WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
+		weatherCode = fiveDay.get(arg0).getWeatherCode();
+		wc = new WeatherCode(Integer.parseInt(weatherCode));
 		
 		d.setText(df.dayOfWeek(fiveDay.get(arg0).getDate()));
-		temp.setText(fiveDay.get(arg0).getMaxC() +"\u00B0 C- " + fiveDay.get(arg0).getMinC()+ "\u00B0 C");
+		temp.setText(fiveDay.get(arg0).getMaxF() +"\u00B0 F- " + fiveDay.get(arg0).getMinF()+ "\u00B0 F");
 		val.setText(fiveDay.get(arg0).getValue());
 		iv.setImageResource(wc.getDrawableIcon());
 		
