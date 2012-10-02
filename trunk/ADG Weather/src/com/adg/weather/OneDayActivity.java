@@ -29,15 +29,15 @@ public class OneDayActivity extends Activity {
 		
 		v.setText(bundle.getString("Value"));
 		date.setText(df.dayOfWeek(bundle.getString("Date")));
-		max.setText(bundle.getString("MaxF")+"\u00B0 F");
-		min.setText(bundle.getString("MinF")+"\u00B0 F");
-		perc.setText(bundle.getString("Precip")+ "mm");
+		max.setText("A high of "+bundle.getString("MaxF")+"\u00B0 F");
+		min.setText("A low of "+bundle.getString("MinF")+"\u00B0 F");
+		perc.setText("Percipitation: "+bundle.getString("Precip")+ "mm");
 		double w = Double.parseDouble(bundle.getString("Mph"));
 		if(w <= 0.0){
 			wind.setText("There will be no wind.");
 		}else{
 			wind.setText("The wind will blow " + bundle.getString("WindPoint") 
-		    + " at about" + bundle.getString("Mph")+"mph");
+		    + " at about" + bundle.getString("Mph")+" mph");
 		}
 		value.setImageResource(wc.getDrawableIcon());
 		
