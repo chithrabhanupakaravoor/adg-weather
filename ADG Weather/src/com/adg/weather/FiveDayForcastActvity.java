@@ -67,7 +67,7 @@ public class FiveDayForcastActvity extends Activity{
 			rapter = new WeatherAdapter(getApplicationContext(), fiveDay);
 			lv.setAdapter(rapter);
 			Log.i("FiveDayForcast", "rapter set");
-			 lv.setOnItemClickListener(new OnItemClickListener(){
+			lv.setOnItemClickListener(new OnItemClickListener(){
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
 						Bundle bundle = ph.getBundleFive(arg2);
