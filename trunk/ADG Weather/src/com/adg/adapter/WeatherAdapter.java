@@ -46,6 +46,8 @@ public class WeatherAdapter extends BaseAdapter {
 	ImageView iv;
 	String weatherCode;
 	WeatherCode wc;
+	
+	
 
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
