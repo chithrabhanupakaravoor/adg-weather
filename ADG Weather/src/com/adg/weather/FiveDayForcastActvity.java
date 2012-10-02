@@ -8,10 +8,14 @@ import com.adg.parser.ParsingHandler;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class FiveDayForcastActvity extends Activity{
 	
@@ -61,6 +65,16 @@ public class FiveDayForcastActvity extends Activity{
 			rapter = new WeatherAdapter(getApplicationContext(), fiveDay);
 			lv.setAdapter(rapter);
 			Log.i("FiveDayForcast", "rapter set");
+			 lv.setOnItemClickListener(new OnItemClickListener(){
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						Bundle bundle = ph.getBundleFive(arg2);
+						Intent in = new Intent(getApplicationContext(), OneDayActivity.class);
+						in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						in.putExtras(bundle);
+						startActivity(in);
+					}
+			});
 		}
 		
 		@Override
@@ -68,4 +82,5 @@ public class FiveDayForcastActvity extends Activity{
 			super.onCancelled();
 		}
 	}
+	
 }

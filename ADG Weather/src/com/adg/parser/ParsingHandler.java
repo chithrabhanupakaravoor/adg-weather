@@ -181,6 +181,7 @@ public class ParsingHandler {
 	public Bundle getBundleFive(int position) {
 		Bundle bundle = new Bundle();
 		bundle.putString("Date", fiveDay.get(position).getDate());
+		bundle.putString("Precip", fiveDay.get(position).getPercip());
 		bundle.putString("MaxC", fiveDay.get(position).getMaxC());
 		bundle.putString("MaxF", fiveDay.get(position).getMaxF());
 		bundle.putString("MinF", fiveDay.get(position).getMinC());

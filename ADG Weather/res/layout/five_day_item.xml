@@ -16,8 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imageView1"
-            android:text="date" />
+            android:layout_toRightOf="@+id/fiveDayImage"
+            android:textColor="@color/Black"
+            android:text="date" 
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/valueText"
@@ -25,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/dateTextView"
             android:layout_below="@+id/dateTextView"
+            android:textColor="@color/Black"
             android:text="value" />
 
         <TextView
@@ -33,6 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/valueText"
             android:layout_alignParentRight="true"
+            android:textColor="@color/Black"
             android:text="temp" />
+
 
     </RelativeLayout>

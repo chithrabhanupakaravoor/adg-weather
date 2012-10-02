@@ -27,6 +27,11 @@
             android:label="@layout/five_day_list">
             
         </activity>
+        <activity
+            android:name="OneDayActivity"
+            android:label="@layout/one_day_layout">
+            
+        </activity>
     </application>
 
 </manifest>

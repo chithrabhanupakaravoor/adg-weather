@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adg.object.Weather;
+import com.adg.weather.DateFinder;
 import com.adg.weather.R;
 import com.adg.weather.WeatherCode;
 
@@ -19,6 +20,7 @@ public class WeatherAdapter extends BaseAdapter {
 	
 	Context context;
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
+	DateFinder df = new DateFinder();
 
 	public WeatherAdapter(Context c, ArrayList<Weather> f){
 		this.context = c;
@@ -53,7 +55,7 @@ public class WeatherAdapter extends BaseAdapter {
 		String weatherCode = fiveDay.get(arg0).getWeatherCode();
 		WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
 		
-		d.setText(fiveDay.get(arg0).getDate());
+		d.setText(df.dayOfWeek(fiveDay.get(arg0).getDate()));
 		temp.setText(fiveDay.get(arg0).getMaxC() +"\u00B0 C- " + fiveDay.get(arg0).getMinC()+ "\u00B0 C");
 		val.setText(fiveDay.get(arg0).getValue());
 		iv.setImageResource(wc.getDrawableIcon());

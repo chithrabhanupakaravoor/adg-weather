@@ -1,0 +1,72 @@
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/LightBlue" >
+
+        <TextView
+            android:id="@+id/dayDateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Day"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/dayImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dayDateView"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/rain128" />
+
+        <TextView
+            android:id="@+id/maxDayView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dayImageView"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/dayDateView"
+            android:text="Max"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/minDayView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/maxDayView"
+            android:layout_toRightOf="@+id/dayDateView"
+            android:text="Min"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/percipDayView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/maxDayView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:text="0.0"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/windDayView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/percipDayView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="56dp"
+            android:text="Wind"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/valueDayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dayImageView"
+            android:layout_centerHorizontal="true"
+            android:text="Rainy" />
+
+    </RelativeLayout>
