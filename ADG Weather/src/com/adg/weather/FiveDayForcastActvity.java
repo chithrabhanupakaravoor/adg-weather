@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.adg.adapter.WeatherAdapter;
 import com.adg.object.Weather;
 import com.adg.parser.ParsingHandler;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +12,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 
 public class FiveDayForcastActvity extends Activity{
 	

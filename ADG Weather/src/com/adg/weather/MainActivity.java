@@ -22,17 +22,23 @@ import android.provider.Settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements LocationListener {
 
+	public static final String PREF_FILE = "ADGWeatherPrefs";
+	private SharedPreferences sharedPreferences;
+	
 	TextView descText;
 	TextView cityText;
 	TextView tempText;
@@ -40,6 +46,13 @@ public class MainActivity extends Activity implements LocationListener {
 	TextView windSpeedText;
 	TextView maxText;
 	TextView minText;
+	
+	
+	ImageButton searchButton;
+	Button gpsButton;
+	Button savedLocButton;
+	
+	EditText searchQueryEditText;
 	
 	private LocationManager locationManager;
 	private String provider;
@@ -53,14 +66,14 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	ImageView iv;
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
+	List<Address> addressSearchList;
 	Weather curr = new Weather();
 	long lat;
 	long lng;
 	ParsingHandler parsingHandler;
 	MessageHandler messageHandler;
 	Bundle urlBundle = new Bundle();
-	
-	
+	Location location;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +92,18 @@ public class MainActivity extends Activity implements LocationListener {
         maxText = (TextView) findViewById(R.id.maxTextView);
         minText = (TextView) findViewById(R.id.minTextView);
         
+        gpsButton = (Button) findViewById(R.id.gpsButton);
+        savedLocButton = (Button) findViewById(R.id.saveLocButton);
+        searchButton = (ImageButton) findViewById(R.id.searchButton);
+        
+        searchQueryEditText = (EditText) findViewById(R.id.editText1);
+        //searchQueryEditText.setVisibility(View.GONE);
+        
+        
+        //hide everything while loading
+        hideViews();
+        
+        
         Button fiveDayButton = (Button) findViewById(R.id.button5Day);
         
         fiveDayButton.setOnClickListener(new OnClickListener(){
@@ -89,12 +114,25 @@ public class MainActivity extends Activity implements LocationListener {
 			}
 		});
         
+        
+        
+        searchButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0){
+				
+				
+			}
+		});
+        
+        
+
+        
+        
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         
         // Criteria to select best provider
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(provider);
+        location = locationManager.getLastKnownLocation(provider);
         
         
 		if (location != null) {
@@ -103,9 +141,17 @@ public class MainActivity extends Activity implements LocationListener {
 		} else {
 			descText.setText("Location not available");
 		}
+
+        gpsButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View view){
+				ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
+				rgt.execute(location, null, null);
+				
+			}
+		});
+     
 		
-		ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
-		rgt.execute(location, null, null);
+		
     }
 
     /* Request updates at startup */
@@ -150,6 +196,30 @@ public class MainActivity extends Activity implements LocationListener {
         return true;
     }
 
+    
+    public void hideViews() {
+    	descText.setVisibility(View.GONE);
+    	cityText.setVisibility(View.GONE);
+    	tempText.setVisibility(View.GONE);
+    	precipText.setVisibility(View.GONE);
+    	windSpeedText.setVisibility(View.GONE);
+    	maxText.setVisibility(View.GONE);
+    	minText.setVisibility(View.GONE);
+    	
+    }
+    
+    public void showViews() {
+    	descText.setVisibility(View.VISIBLE);
+    	cityText.setVisibility(View.VISIBLE);
+    	tempText.setVisibility(View.VISIBLE);
+    	precipText.setVisibility(View.VISIBLE);
+    	windSpeedText.setVisibility(View.VISIBLE);
+    	maxText.setVisibility(View.VISIBLE);
+    	minText.setVisibility(View.VISIBLE);
+    	
+    	
+    }
+    
 	// AsyncTask encapsulating the reverse-geocoding API. Since the geocoder API
 	// is blocked,
 	// we do not want to invoke it from the UI thread.
@@ -175,11 +245,17 @@ public class MainActivity extends Activity implements LocationListener {
 		protected Void doInBackground(Location... params) {
 			Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
 
+			
+			
 			Location loc = params[0];
 			List<Address> addresses = null;
 			try {
 				// Call the synchronous getFromLocation() method by passing in
+				
 				// the lat/long values.
+				
+				addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
+				
 				addresses = geocoder.getFromLocation(loc.getLatitude(),
 						loc.getLongitude(), 1);
 			} catch (IOException e) {
@@ -211,6 +287,12 @@ public class MainActivity extends Activity implements LocationListener {
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
 
+			if(addressSearchList != null && addressSearchList.size() > 0) {
+				for(int i=0; i < addressSearchList.size(); i++) {
+					Log.i("Search Results",""+ addressSearchList.get(i).getAddressLine(1));
+				}
+			}
+			
 			return null;
 		}
 		
@@ -218,6 +300,8 @@ public class MainActivity extends Activity implements LocationListener {
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			
+			String maxF = fiveDay.get(0).getMaxF();
+			String minF = fiveDay.get(0).getMinF();
 			
 			//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
 			descText.setText(curr.getValue());
@@ -226,8 +310,8 @@ public class MainActivity extends Activity implements LocationListener {
 			windSpeedText.setText("Wind Speed:"+curr.getMph() + " mph");
 			//maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
 			//minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
-			maxText.setVisibility(View.GONE);
-			minText.setVisibility(View.GONE);
+			maxText.setText("Max: "+maxF);
+			minText.setText("  Min: "+minF);
 			
 			String weatherCode = curr.getWeatherCode();
 			//Log.i("WEATHER CODE", ""+weatherCode);
@@ -235,6 +319,8 @@ public class MainActivity extends Activity implements LocationListener {
 			cityText.setText(addressLine+"\n"+country);
 			iv.setImageResource(wc.getDrawableIcon());
 			
+			
+			showViews();
 			messageHandler.sendEmptyMessage(0);
 			
 		}
