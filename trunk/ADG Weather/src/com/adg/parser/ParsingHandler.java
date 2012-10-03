@@ -171,9 +171,7 @@ public class ParsingHandler {
 					curr.setWindDegree(windDegreeCurr);
 					curr.setKmph(kmphCurr);
 					curr.setMph(mphCurr);
-				}
-				
-				
+				}				
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}			
