@@ -8,5 +8,8 @@
     <string name="zip">Zipcode</string>
     <string name="city">City, Sate</string>
     <string name="find">Find</string>
+    <string name="close">Close</string>
+    <string name="ecity">Enter City</string>
+    <string name="ecountry">Enter Country</string>
 
 </resources>

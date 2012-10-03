@@ -8,6 +8,7 @@ import java.util.Locale;
 import com.adg.handlers.MessageHandler;
 import com.adg.object.Weather;
 import com.adg.parser.ParsingHandler;
+import com.adg.search.WeatherSearch;
 
 import android.location.Address;
 import android.location.Criteria;
@@ -23,6 +24,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -59,7 +61,8 @@ public class MainActivity extends Activity implements LocationListener {
 	Button gpsButton;
 	Button savedLocButton;
 	
-	EditText searchQueryEditText;
+	EditText searchQueryCity;
+	EditText searchQueryCountry;
 	
 	private LocationManager locationManager;
 	private String provider;
@@ -103,6 +106,12 @@ public class MainActivity extends Activity implements LocationListener {
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
         
+        searchQueryCity = (EditText) findViewById(R.id.editText1);
+        searchQueryCountry = (EditText) findViewById(R.id.editText2);
+        //searchQueryEditText.setVisibility(View.GONE);
+        
+        
+
         //hide everything while loading
         hideViews();
         
@@ -116,19 +125,23 @@ public class MainActivity extends Activity implements LocationListener {
 				startActivity(in);
 			}
 		});
-        
-        
+           
         
         searchButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View arg0){
-				
-				
+				if(searchQueryCity.getText().equals(null)||searchQueryCountry.getText().equals(null)){
+					Toast.makeText(myContext, "Please enter and city and country to search", Toast.LENGTH_SHORT).show();
+				}else{
+					Intent in = new Intent(MainActivity.this, WeatherSearch.class);
+					Bundle bun = new Bundle();
+					bun.putString("city", searchQueryCity.toString());
+					bun.putString("country", searchQueryCountry.toString());
+					in.putExtras(bun);
+					startActivity(in);
+				}	
 			}
 		});
-        
-        
-
-        
+         
         
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         
