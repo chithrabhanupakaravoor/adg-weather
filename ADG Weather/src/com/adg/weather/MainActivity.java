@@ -175,18 +175,8 @@ public class MainActivity extends Activity implements LocationListener {
         
         searchButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
-
-				if(searchQueryCity.getText().equals(null)||searchQueryCountry.getText().equals(null)){
-					Toast.makeText(myContext, "Please enter and city and country to search", Toast.LENGTH_SHORT).show();
-				}else{
-					Intent in = new Intent(MainActivity.this, WeatherSearch.class);
-					Bundle bun = new Bundle();
-					bun.putString("city", searchQueryCity.getText().toString());
-					bun.putString("country", searchQueryCountry.getText().toString());
-					in.putExtras(bun);
-					startActivity(in);
-				}	
-
+				Intent in = new Intent(MainActivity.this, SearchLocationActivity.class);
+				startActivity(in);
 			}
 		});
          
