@@ -129,7 +129,7 @@ public class MainActivity extends Activity implements LocationListener {
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
         registerForContextMenu(savedLocButton);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
-        saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
+ //       saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
         
 
         searchQueryCity = (EditText) findViewById(R.id.editText1);
@@ -395,6 +395,41 @@ public class MainActivity extends Activity implements LocationListener {
     	
     }
     
+    public class favParsTask extends AsyncTask{
+    	
+    	Context contaxt;
+    	
+    	public favParsTask(Context c){
+    		super();
+    		this.contaxt = c;
+    	}
+    	
+    	@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			messageHandler.sendEmptyMessage(1);
+		}
+
+		@Override
+		protected Object doInBackground(Object... arg0) {
+//			urlBundle.putString("URL", url);
+//			Log.i("URL", url);
+//			parsingHandler = new ParsingHandler(url);
+			parsingHandler.startParsing();
+			fiveDay = parsingHandler.getFiveDay();
+			curr = parsingHandler.getCurr();
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Object result) {
+			super.onPostExecute(result);
+			
+			setView(fiveDay, curr);
+		}
+    	
+    }
+    
 	// AsyncTask encapsulating the reverse-geocoding API. Since the geocoder API
 	// is blocked,
 	// we do not want to invoke it from the UI thread.
@@ -474,30 +509,35 @@ public class MainActivity extends Activity implements LocationListener {
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			
-			String maxF = fiveDay.get(0).getMaxF();
-			String minF = fiveDay.get(0).getMinF();
-			
-			//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
-			descText.setText(curr.getValue());
-			tempText.setText(curr.getF() + "\u00B0 F");
-			precipText.setText("Precipitation: "+curr.getPercip());
-			windSpeedText.setText("Wind Speed:"+curr.getMph() + " mph");
-			//maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
-			//minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
-			maxText.setText("Max: "+maxF + "\u00B0 F  /");
-			minText.setText("  Min: "+minF + "\u00B0 F");
-			
-			String weatherCode = curr.getWeatherCode();
-			//Log.i("WEATHER CODE", ""+weatherCode);
-			WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
-			cityText.setText(addressLine+"\n"+country);
-			iv.setImageResource(wc.getDrawableIcon());
-			
-			showViews();
-			messageHandler.sendEmptyMessage(0);			
+			setView(fiveDay, curr);
+		
 		}
-
 	}
+	
+	public void setView(ArrayList<Weather> fd, Weather c){
+		String maxF = fd.get(0).getMaxF();
+		String minF = fd.get(0).getMinF();
+		
+		//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
+		descText.setText(c.getValue());
+		tempText.setText(c.getF() + "\u00B0 F");
+		precipText.setText("Precipitation: "+c.getPercip());
+		windSpeedText.setText("Wind Speed:"+c.getMph() + " mph");
+		//maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
+		//minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
+		maxText.setText("Max: "+maxF + "\u00B0 F  /");
+		minText.setText("  Min: "+minF + "\u00B0 F");
+		
+		String weatherCode = curr.getWeatherCode();
+		//Log.i("WEATHER CODE", ""+weatherCode);
+		WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
+		cityText.setText(addressLine+"\n"+country);
+		iv.setImageResource(wc.getDrawableIcon());
+		
+		
+		showViews();
+		messageHandler.sendEmptyMessage(0);
+	}
+	
 
 }

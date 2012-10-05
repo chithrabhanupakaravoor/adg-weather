@@ -130,8 +130,7 @@
             android:background="@drawable/largeblackbutton"
             android:src="@drawable/ic_action_search"
             android:text="Button" />
-
-
+        
         <Button
             android:id="@+id/saveToFaveButton"
             android:layout_width="70dp"
@@ -142,6 +141,7 @@
             android:background="@drawable/largeblackbutton"
             android:text="Save to Favorites" />
 
+>>>>>>> .r37
         <EditText
             android:id="@+id/editText1"
             android:layout_width="125dp"
