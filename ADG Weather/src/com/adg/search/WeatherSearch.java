@@ -21,8 +21,8 @@ public class WeatherSearch extends Activity {
 	static final String FORMAT = "&format=json";
 	static final String NUM_DAYS = "&num_of_days=5";
 	static final String API_KEY = "&key=845adebec4142346121409";
-	String city;
-	String country;
+	String city = "";
+	String zip = "";
 	
 	TextView cloudTextView;
 	TextView humidityTextView;
@@ -46,7 +46,7 @@ public class WeatherSearch extends Activity {
         setContentView(R.layout.search_dialog_box);
         Bundle bun = getIntent().getExtras();
         city=(String) bun.get("city");
-        country=(String) bun.get("country");
+        zip=(String) bun.getString("zip");
         GetWeatherSearch search = new GetWeatherSearch(getApplicationContext());
         search.execute((Integer)null);
     }
@@ -62,8 +62,11 @@ public class WeatherSearch extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			if(!city.equals("")){
 			searchFor += city;
-			searchFor += "&" + country;
+			}else{
+			searchFor += zip;
+			}
 			
 			cloudTextView = (TextView)findViewById(R.id.textCloud);
 			humidityTextView = (TextView)findViewById(R.id.textHum);
