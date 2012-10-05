@@ -14,7 +14,7 @@
             android:layout_marginLeft="20dp"
             android:background="@drawable/gps_icon"
             android:text=" " />
-
+
         <Button
             android:id="@+id/saveLocButton"
             android:layout_width="90dp"
@@ -23,7 +23,7 @@
             android:layout_alignParentRight="true"
             android:layout_margin="5dp"
             android:background="@drawable/largeblackbutton"
-            android:text="Saved Locations"
+            android:text="Favorite Locations"
             android:textColor="@color/White" />
 
         <TextView
@@ -125,19 +125,23 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-<<<<<<< .mine
             android:layout_margin="5dp"
-=======
             android:layout_marginBottom="5dp"
->>>>>>> .r33
             android:background="@drawable/largeblackbutton"
             android:src="@drawable/ic_action_search"
             android:text="Button" />
-<<<<<<< .mine
-=======
->>>>>>> .r33
 
-<<<<<<< .mine
+
+        <Button
+            android:id="@+id/saveToFaveButton"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:textColor="@color/White"
+            android:layout_alignRight="@+id/button5Day"
+            android:layout_alignTop="@+id/location"
+            android:background="@drawable/largeblackbutton"
+            android:text="Save to Favorites" />
+
         <EditText
             android:id="@+id/editText1"
             android:layout_width="125dp"
@@ -157,8 +161,7 @@
             android:layout_margin="5dp"
             android:ems="10" />
 
-=======
->>>>>>> .r33
+
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
