@@ -141,7 +141,6 @@
             android:background="@drawable/largeblackbutton"
             android:text="Save to Favorites" />
 
->>>>>>> .r37
         <EditText
             android:id="@+id/editText1"
             android:layout_width="125dp"
