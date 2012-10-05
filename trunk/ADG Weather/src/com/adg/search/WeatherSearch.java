@@ -16,10 +16,10 @@ import com.adg.weather.R;
 
 public class WeatherSearch extends Activity {
 	
-	static final String BASE_URL = "http://free.worldweatheronline.com/feed/weather.ashx??";
+	static final String BASE_URL = "http://free.worldweatheronline.com/feed/weather.ashx?";
 	String searchFor = "q=";
 	static final String FORMAT = "&format=json";
-	static final String NUM_DAYS = "num_of_days=5";
+	static final String NUM_DAYS = "&num_of_days=5";
 	static final String API_KEY = "&key=845adebec4142346121409";
 	String city;
 	String country;
@@ -106,19 +106,22 @@ public class WeatherSearch extends Activity {
 			String kmph = bun.getString("Kmph");
 			String mph = bun.getString("Mph");	
 			
-			cloudTextView.setText(cloudCover);
-			humidityTextView.setText(humidity);
-			timeTextView.setText(time);
-			precipTextView.setText(precip);
-			tempCTextView.setText(tempC);
-			tempFTextView.setText(tempF);
-			visibilityTextView.setText(visibility);
-			codeTextView.setText(code);
-			valueTextView.setText(value);
-			windPointTextView.setText(windPoint);
-			windDegreeTextView.setText(windDegree);
-			kmphTextView.setText(kmph);
-			mphTextView.setText(mph);
+			Log.i("Bundle", bun.toString());
+			
+			
+			cloudTextView.setText(""+cloudCover);
+			humidityTextView.setText(""+humidity);
+			timeTextView.setText(""+time);
+			precipTextView.setText(""+precip);
+			tempCTextView.setText(""+tempC);
+			tempFTextView.setText(""+tempF);
+			visibilityTextView.setText(""+visibility);
+			codeTextView.setText(""+code);
+			valueTextView.setText(""+value);
+			windPointTextView.setText(""+windPoint);
+			windDegreeTextView.setText(""+windDegree);
+			kmphTextView.setText(""+kmph);
+			mphTextView.setText(""+mph);
 			
 		}		
 	}

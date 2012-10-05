@@ -2,10 +2,15 @@ package com.adg.weather;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import com.adg.handlers.MessageHandler;
+import com.adg.location.MyLocation;
 import com.adg.object.Weather;
 import com.adg.parser.ParsingHandler;
 import com.adg.search.WeatherSearch;
@@ -16,16 +21,24 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.net.ConnectivityManager;
 import android.os.Message;
 import android.provider.Settings;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.text.InputFilter.LengthFilter;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,6 +50,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements LocationListener {
+
+	
 
 	//shared prefs
 	public static final String PREF_FILE = "ADGWeatherPrefs";
@@ -60,12 +75,18 @@ public class MainActivity extends Activity implements LocationListener {
 	ImageButton searchButton;
 	Button gpsButton;
 	Button savedLocButton;
+	Button saveToFaveButton;
 	
 	EditText searchQueryCity;
 	EditText searchQueryCountry;
+
+	
+	List<MyLocation> favoriteLocations = new LinkedList<MyLocation>();
 	
 	private LocationManager locationManager;
 	private String provider;
+	private String gpsProvider;
+	private String netProvider;
 	private Context myContext;
 	
 	public String addressText = "";
@@ -85,11 +106,14 @@ public class MainActivity extends Activity implements LocationListener {
 	Bundle urlBundle = new Bundle();
 	Location location;
 	
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
     
+        favoriteLocations.clear();
+        
         myContext = getApplicationContext();
         messageHandler = new MessageHandler(this);
         
@@ -104,14 +128,37 @@ public class MainActivity extends Activity implements LocationListener {
         
         gpsButton = (Button) findViewById(R.id.gpsButton);
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
+        registerForContextMenu(savedLocButton);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
+        saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
         
+
         searchQueryCity = (EditText) findViewById(R.id.editText1);
         searchQueryCountry = (EditText) findViewById(R.id.editText2);
         //searchQueryEditText.setVisibility(View.GONE);
         
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle("Do you want to enable GPS");
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		})
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.cancel();
+			}
+		});
         
-
+        
+     // create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		alertDialog.show();
+		
         //hide everything while loading
         hideViews();
         
@@ -128,27 +175,77 @@ public class MainActivity extends Activity implements LocationListener {
            
         
         searchButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View arg0){
+			public void onClick(View view){
+
 				if(searchQueryCity.getText().equals(null)||searchQueryCountry.getText().equals(null)){
 					Toast.makeText(myContext, "Please enter and city and country to search", Toast.LENGTH_SHORT).show();
 				}else{
 					Intent in = new Intent(MainActivity.this, WeatherSearch.class);
 					Bundle bun = new Bundle();
-					bun.putString("city", searchQueryCity.toString());
-					bun.putString("country", searchQueryCountry.toString());
+					bun.putString("city", searchQueryCity.getText().toString());
+					bun.putString("country", searchQueryCountry.getText().toString());
 					in.putExtras(bun);
 					startActivity(in);
 				}	
+
 			}
 		});
          
         
+
+        
+
+        
+        saveToFaveButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View view){
+				saveToFaveButton.setTextColor(Color.RED);
+				String key = addressLine;
+				String vals = ""+lat+"a"+lng;
+				Log.i("Saving Location", key+" Coords"+vals);
+				SavePreferences(key,vals);
+				saveToFaveButton.setTextColor(Color.WHITE);
+			}
+		});
+        
+
+        
+        
+        
+        savedLocButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View view){
+				LoadPreferences();
+				openContextMenu(view);
+			}
+		});
+
+        
+        
+		
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         
         // Criteria to select best provider
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
+        Criteria criteriaGPS = new Criteria();
+        criteriaGPS.setAccuracy(Criteria.ACCURACY_FINE);
+        
+        
+        Criteria criteriaNet = new Criteria();
+        criteriaNet.setAccuracy(Criteria.ACCURACY_COARSE);
+        
+        gpsProvider = locationManager.getBestProvider(criteriaGPS, false);
+        provider = locationManager.getBestProvider(criteriaNet, false);
+        
+        
+
+        //provider = locationManager.getBestProvider(criteria, false);
         location = locationManager.getLastKnownLocation(provider);
+        
+        if(!locationManager.isProviderEnabled(gpsProvider)) {
+        	Log.i("GPS", "GPS not enabled");
+        }
+        else if(!locationManager.isProviderEnabled(netProvider)) {
+        	Log.i("Net", "Network not enabled");
+        }
         
         
 		if (location != null) {
@@ -157,19 +254,67 @@ public class MainActivity extends Activity implements LocationListener {
 		} else {
 			descText.setText("Location not available");
 		}
-
+		
+		
+		
+		
+		
+//		LoadPreferences();
+//		
+//		for(int i = 0; i < favoriteLocations.size(); i++) {
+//			Log.i("Save Locations", favoriteLocations.get(i).getAddress()+" "+favoriteLocations.get(i).getLat());
+//		}
+//		
+		
         gpsButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
 				rgt.execute(location, null, null);
-				
 			}
 		});
      
+        
         ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
 		rgt.execute(location, null, null);
 		
     }
+
+	private void SavePreferences(String key, String coor) {
+		sharedPreferences = getApplicationContext().getSharedPreferences(
+				PREF_FILE, 0);
+		Map allLocations = sharedPreferences.getAll();
+		if (allLocations.containsKey(key)) {
+
+		} else {
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			// editor.putString(key, value);
+			editor.putString(key, coor);
+			editor.commit();
+		}
+	}
+
+	private void LoadPreferences() {
+		sharedPreferences = getApplicationContext().getSharedPreferences(PREF_FILE, 0);
+		Map allLocations = sharedPreferences.getAll();
+		favoriteLocations.clear();
+		
+		List<String> keys = new ArrayList<String>(allLocations.keySet());
+		List<String> values = new ArrayList<String>(allLocations.values());
+		
+		
+		for(int i = 0; i < keys.size(); i++ ) {
+			MyLocation ml = new MyLocation();
+			String[] coords = values.get(i).split("a");
+			long lg = Long.parseLong(coords[0]);
+			long lt = Long.parseLong(coords[1]);
+			String adr = keys.get(i);
+			ml.setAddress(adr);
+			ml.setLat(lt);
+			ml.setLng(lg);
+			
+			favoriteLocations.add(ml);
+		}
+	}
 
     /* Request updates at startup */
     @Override
@@ -213,6 +358,19 @@ public class MainActivity extends Activity implements LocationListener {
         return true;
     }
 
+    @Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		menu.setHeaderTitle("Saved Locations"); 
+		for(int j = 0; j < favoriteLocations.size(); j++) {
+			menu.add(0, v.getId(), 0, favoriteLocations.get(j).getAddress());
+		}
+		
+		//menu.add(0, v.getId(), 0, "Option 2");
+	}
+    
     
     public void hideViews() {
     	descText.setVisibility(View.GONE);
@@ -272,7 +430,7 @@ public class MainActivity extends Activity implements LocationListener {
 				
 				// the lat/long values.
 				
-				addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
+				//addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
 				
 				addresses = geocoder.getFromLocation(loc.getLatitude(),
 						loc.getLongitude(), 1);
@@ -337,13 +495,10 @@ public class MainActivity extends Activity implements LocationListener {
 			cityText.setText(addressLine+"\n"+country);
 			iv.setImageResource(wc.getDrawableIcon());
 			
-			
 			showViews();
-			messageHandler.sendEmptyMessage(0);
-			
+			messageHandler.sendEmptyMessage(0);			
 		}
 
-		
 	}
 
 }
