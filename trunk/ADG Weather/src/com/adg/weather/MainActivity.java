@@ -106,7 +106,6 @@ public class MainActivity extends Activity implements LocationListener {
 	Bundle urlBundle = new Bundle();
 	Location location;
 	
-    @SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -65,19 +65,19 @@ public class WeatherSearch extends Activity {
 			searchFor += city;
 			searchFor += "&" + country;
 			
-			TextView cloudTextView = (TextView)findViewById(R.id.textCloud);
-			TextView humidityTextView = (TextView)findViewById(R.id.textHum);
-			TextView timeTextView = (TextView)findViewById(R.id.textTime);
-			TextView precipTextView = (TextView)findViewById(R.id.precip);
-			TextView tempCTextView = (TextView)findViewById(R.id.textCel);
-			TextView tempFTextView = (TextView)findViewById(R.id.textFar);
-			TextView visibilityTextView = (TextView)findViewById(R.id.textVis);
-			TextView codeTextView = (TextView)findViewById(R.id.textCode);
-			TextView valueTextView = (TextView)findViewById(R.id.textValue);
-			TextView windPointTextView = (TextView)findViewById(R.id.textWPoint);
-			TextView windDegreeTextView = (TextView)findViewById(R.id.textWDegree);
-			TextView kmphTextView = (TextView)findViewById(R.id.textKmph);
-			TextView mphTextView = (TextView)findViewById(R.id.textMph);
+			cloudTextView = (TextView)findViewById(R.id.textCloud);
+			humidityTextView = (TextView)findViewById(R.id.textHum);
+			timeTextView = (TextView)findViewById(R.id.textTime);
+			precipTextView = (TextView)findViewById(R.id.precip);
+			tempCTextView = (TextView)findViewById(R.id.textCel);
+			tempFTextView = (TextView)findViewById(R.id.textFar);
+			visibilityTextView = (TextView)findViewById(R.id.textVis);
+			codeTextView = (TextView)findViewById(R.id.textCode);
+			valueTextView = (TextView)findViewById(R.id.textValue);
+			windPointTextView = (TextView)findViewById(R.id.textWPoint);
+			windDegreeTextView = (TextView)findViewById(R.id.textWDegree);
+			kmphTextView = (TextView)findViewById(R.id.textKmph);
+			mphTextView = (TextView)findViewById(R.id.textMph);
 		}
 		
 		@Override
