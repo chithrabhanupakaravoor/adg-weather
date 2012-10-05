@@ -52,7 +52,9 @@ public class SearchLocationActivity extends Activity {
 					bun.putString("zip", zip.getText().toString());
 					bun.putString("city", "");
 					in.putExtras(bun);
-					startActivity(in);
+					//startActivity(in);
+					setResult(1, in);
+					finish();
 					
 				}else{
 					
@@ -61,6 +63,7 @@ public class SearchLocationActivity extends Activity {
 					so = sph.getSo();
 				}	
 
+				
 			}
 		});
 		

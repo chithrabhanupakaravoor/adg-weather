@@ -40,6 +40,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
@@ -51,7 +52,15 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements LocationListener {
 
-	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(resultCode == 1) {
+			Bundle bun = data.getExtras();
+		}
+	}
 
 	//shared prefs
 	public static final String PREF_FILE = "ADGWeatherPrefs";
@@ -94,6 +103,8 @@ public class MainActivity extends Activity implements LocationListener {
 	public String country = "";
 	public String state = "";
 	public String addressLine = "";
+	public String favoriteUrl;
+	
 	
 	ImageView iv;
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
@@ -129,20 +140,15 @@ public class MainActivity extends Activity implements LocationListener {
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
         registerForContextMenu(savedLocButton);
         searchButton = (ImageButton) findViewById(R.id.searchButton);
- //       saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
+        saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
         
 
-        searchQueryCity = (EditText) findViewById(R.id.editText1);
-        searchQueryCountry = (EditText) findViewById(R.id.editText2);
-        //searchQueryEditText.setVisibility(View.GONE);
         
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilder.setTitle("Do you want to enable GPS");
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
+				startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
 			}
 		})
         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -154,9 +160,8 @@ public class MainActivity extends Activity implements LocationListener {
 		});
         
         
-     // create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		alertDialog.show();
+    
+        
 		
         //hide everything while loading
         hideViews();
@@ -175,8 +180,23 @@ public class MainActivity extends Activity implements LocationListener {
         
         searchButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
+
+//
+//				if(searchQueryCity.getText().equals(null)||searchQueryCountry.getText().equals(null)){
+//					Toast.makeText(myContext, "Please enter and city and country to search", Toast.LENGTH_SHORT).show();
+//				}else{
+//					Intent in = new Intent(MainActivity.this, WeatherSearch.class);
+//					Bundle bun = new Bundle();
+//					bun.putString("city", searchQueryCity.getText().toString());
+//					bun.putString("country", searchQueryCountry.getText().toString());
+//					in.putExtras(bun);
+//					startActivity(in);
+//				}	
+
+
 				Intent in = new Intent(MainActivity.this, SearchLocationActivity.class);
 				startActivity(in);
+
 			}
 		});
          
@@ -187,12 +207,10 @@ public class MainActivity extends Activity implements LocationListener {
         
         saveToFaveButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
-				saveToFaveButton.setTextColor(Color.RED);
 				String key = addressLine;
-				String vals = ""+lat+"a"+lng;
+				String vals = ""+lng+"~"+lat+"~"+country;
 				Log.i("Saving Location", key+" Coords"+vals);
 				SavePreferences(key,vals);
-				saveToFaveButton.setTextColor(Color.WHITE);
 			}
 		});
         
@@ -221,21 +239,25 @@ public class MainActivity extends Activity implements LocationListener {
         Criteria criteriaNet = new Criteria();
         criteriaNet.setAccuracy(Criteria.ACCURACY_COARSE);
         
-        gpsProvider = locationManager.getBestProvider(criteriaGPS, false);
+        //gpsProvider = locationManager.getBestProvider(criteriaGPS, false);
         provider = locationManager.getBestProvider(criteriaNet, false);
         
-        
+        if(gpsProvider == null) { 
+		// create alert dialog
+        	AlertDialog alertDialog = alertDialogBuilder.create();
+			alertDialog.show();
+        }
 
         //provider = locationManager.getBestProvider(criteria, false);
         location = locationManager.getLastKnownLocation(provider);
-        
-        if(!locationManager.isProviderEnabled(gpsProvider)) {
-        	Log.i("GPS", "GPS not enabled");
-        }
-        else if(!locationManager.isProviderEnabled(netProvider)) {
-        	Log.i("Net", "Network not enabled");
-        }
-        
+        //Location loc2 = locationManager.getLastKnownLocation(gpsProvider);
+//        if(locationManager.isProviderEnabled(gpsProvider)) {
+//        	Log.i("GPS", "GPS enabled");
+//        }
+//        if(locationManager.isProviderEnabled(netProvider)) {
+//        	Log.i("Net", "Network enabled");
+//        }
+//        
         
 		if (location != null) {
 			System.out.println("Provider: " + provider + " has been selected.");
@@ -245,15 +267,6 @@ public class MainActivity extends Activity implements LocationListener {
 		}
 		
 		
-		
-		
-		
-//		LoadPreferences();
-//		
-//		for(int i = 0; i < favoriteLocations.size(); i++) {
-//			Log.i("Save Locations", favoriteLocations.get(i).getAddress()+" "+favoriteLocations.get(i).getLat());
-//		}
-//		
 		
         gpsButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
@@ -273,12 +286,13 @@ public class MainActivity extends Activity implements LocationListener {
 				PREF_FILE, 0);
 		Map allLocations = sharedPreferences.getAll();
 		if (allLocations.containsKey(key)) {
-
+			Toast.makeText(myContext, "Location already exists", Toast.LENGTH_SHORT).show();
 		} else {
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			// editor.putString(key, value);
 			editor.putString(key, coor);
 			editor.commit();
+			Toast.makeText(myContext, key+" added to favorites", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -293,13 +307,19 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		for(int i = 0; i < keys.size(); i++ ) {
 			MyLocation ml = new MyLocation();
-			String[] coords = values.get(i).split("a");
+			String[] coords = values.get(i).split("\\~");
+			//String [] local = keys.get(i).split("^");
+			
+			
 			long lg = Long.parseLong(coords[0]);
 			long lt = Long.parseLong(coords[1]);
+			String cou = coords[2];
 			String adr = keys.get(i);
+			
 			ml.setAddress(adr);
 			ml.setLat(lt);
 			ml.setLng(lg);
+			ml.setCountry(cou);
 			
 			favoriteLocations.add(ml);
 		}
@@ -360,6 +380,22 @@ public class MainActivity extends Activity implements LocationListener {
 		//menu.add(0, v.getId(), 0, "Option 2");
 	}
     
+    @Override
+	public boolean onContextItemSelected(MenuItem item) {
+    	for(int i = 0; i < favoriteLocations.size(); i++) {
+    		if(item.getTitle().equals(favoriteLocations.get(i).getAddress())) {
+    			long lat = favoriteLocations.get(i).getLat();
+    			long lng = favoriteLocations.get(i).getLng();
+    			String ads = favoriteLocations.get(i).getAddress();
+    			//String country = favoriteLocations.get(i).getCountry();
+    			
+    			FavParsTask favoriteParsingTask = new FavParsTask(myContext, lng, lat, ads, "");
+    			favoriteParsingTask.execute((Integer)null);
+    		}
+    	}
+		return true;
+	}
+    
     
     public void hideViews() {
     	descText.setVisibility(View.GONE);
@@ -385,26 +421,44 @@ public class MainActivity extends Activity implements LocationListener {
     	
     }
     
-    public class favParsTask extends AsyncTask{
+    public class FavParsTask extends AsyncTask{
     	
     	Context contaxt;
+    	long longitude;
+    	long latitude;
+    	String address;
+    	String countr;
     	
-    	public favParsTask(Context c){
+    	public FavParsTask(Context c){
     		super();
     		this.contaxt = c;
+    	}
+    	
+    	public FavParsTask(Context c, long lg, long lt, String adrs, String cou){
+    		super();
+    		this.contaxt = c;
+    		this.longitude = lg;
+    		this.latitude = lt;
+    		this.address = adrs;
+    		this.countr = cou;
     	}
     	
     	@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			messageHandler.sendEmptyMessage(1);
+			
+			addressLine = address;
+			messageHandler.sendEmptyMessage(9);
 		}
 
 		@Override
 		protected Object doInBackground(Object... arg0) {
-//			urlBundle.putString("URL", url);
-//			Log.i("URL", url);
-//			parsingHandler = new ParsingHandler(url);
+
+			String url = URL_1 + latitude + ".00," + longitude + ".00" + URL_2+API_KEY;
+			Log.i("FAV URL", url);
+			urlBundle.putString("URL", url);
+
+			parsingHandler = new ParsingHandler(url);
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
@@ -416,6 +470,7 @@ public class MainActivity extends Activity implements LocationListener {
 			super.onPostExecute(result);
 			
 			setView(fiveDay, curr);
+			messageHandler.sendEmptyMessage(0);
 		}
     	
     }
@@ -508,6 +563,8 @@ public class MainActivity extends Activity implements LocationListener {
 		String maxF = fd.get(0).getMaxF();
 		String minF = fd.get(0).getMinF();
 		
+		
+		
 		//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
 		descText.setText(c.getValue());
 		tempText.setText(c.getF() + "\u00B0 F");
@@ -518,10 +575,10 @@ public class MainActivity extends Activity implements LocationListener {
 		maxText.setText("Max: "+maxF + "\u00B0 F  /");
 		minText.setText("  Min: "+minF + "\u00B0 F");
 		
-		String weatherCode = curr.getWeatherCode();
+		String weatherCode = c.getWeatherCode();
 		//Log.i("WEATHER CODE", ""+weatherCode);
 		WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
-		cityText.setText(addressLine+"\n"+country);
+		cityText.setText(addressLine);
 		iv.setImageResource(wc.getDrawableIcon());
 		
 		
