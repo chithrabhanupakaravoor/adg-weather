@@ -1,0 +1,73 @@
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:background="@color/TrannyGray" >
+
+        <ImageView
+            android:id="@+id/w_ImageCondition"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="12dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/cloudy" />
+
+        <TextView
+            android:id="@+id/W_TextTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/w_ImageCondition"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/w_ImageCondition"
+            android:gravity="center"
+            android:text="57"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/AliceBlue"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/w_TextCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/W_TextTemp"
+            android:text="Chicago"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/AliceBlue" />
+
+        <TextView
+            android:id="@+id/w_TextCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/w_TextCity"
+            android:layout_below="@+id/w_TextCity"
+            android:text="Cloudy"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/AliceBlue" />
+
+        <TextView
+            android:id="@+id/w_TextMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/w_TextCondition"
+            android:layout_below="@+id/w_TextCondition"
+            android:text="76"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/AliceBlue" />
+
+        <TextView
+            android:id="@+id/w_TextMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/w_TextCondition"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/w_TextMax"
+            android:text="55"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/AliceBlue" />
+
+    </RelativeLayout>
