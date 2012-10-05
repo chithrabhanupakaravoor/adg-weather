@@ -29,8 +29,6 @@ public class SearchParsingHandler {
 	private static final String VALUE = "value";
 	
 	
-	
-	
 	String start = "http://www.worldweatheronline.com/feed/search.ashx?";
 	String key = "key=845adebec4142346121409";
 	String query = "&query=";
@@ -47,7 +45,7 @@ public class SearchParsingHandler {
 	
 	public void startParsing(){
 		if(location.equals("")) {
-			Log.i("USER ERROR", "Initilize the URL");
+			Log.i("USER ERROR", "Initilize the Location");
 		}
 		else {
 			String url = start + key + query + location + end;

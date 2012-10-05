@@ -41,8 +41,8 @@ public class Weather {
 		this.humidity = humidity;
 		this.time = time;
 		this.pressure = pressure;
-		C = c;
-		F = f;
+		this.C = c;
+		this.F = f;
 		this.visibility = visibility;
 	}
 	public Weather(	String date, String percip, String weatherCode, String value,
