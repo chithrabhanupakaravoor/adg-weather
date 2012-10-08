@@ -52,15 +52,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements LocationListener {
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		if(resultCode == 1) {
-			Bundle bun = data.getExtras();
-		}
-	}
+
 
 	//shared prefs
 	public static final String PREF_FILE = "ADGWeatherPrefs";
@@ -116,6 +108,18 @@ public class MainActivity extends Activity implements LocationListener {
 	MessageHandler messageHandler;
 	Bundle urlBundle = new Bundle();
 	Location location;
+	String urlBata = "";
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(resultCode == 1) {
+			Bundle bun = data.getExtras();
+			urlBata = bun.getString("url");
+		}
+	}
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -453,10 +457,16 @@ public class MainActivity extends Activity implements LocationListener {
 
 		@Override
 		protected Object doInBackground(Object... arg0) {
-
-			String url = URL_1 + latitude + ".00," + longitude + ".00" + URL_2+API_KEY;
+			String url;
+			if(!urlBata.equals("")){
+			url =urlBata;
+			Log.i("FAV URL", url);
+			urlBundle.putString("URL", url);	
+			}else{
+			url = URL_1 + latitude + ".00," + longitude + ".00" + URL_2+API_KEY;
 			Log.i("FAV URL", url);
 			urlBundle.putString("URL", url);
+			}
 
 			parsingHandler = new ParsingHandler(url);
 			parsingHandler.startParsing();
