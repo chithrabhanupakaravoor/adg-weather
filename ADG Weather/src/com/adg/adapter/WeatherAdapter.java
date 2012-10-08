@@ -24,7 +24,6 @@ public class WeatherAdapter extends BaseAdapter {
 	public WeatherAdapter(Context c, ArrayList<Weather> f){
 		this.context = c;
 		this.fiveDay = f;
-		Log.i("WeatherAdapter", "Weather adater is being called");
 	}
 	public int getCount() {
 		return fiveDay.size();
