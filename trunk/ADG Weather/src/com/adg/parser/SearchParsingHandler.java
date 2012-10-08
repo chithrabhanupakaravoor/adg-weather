@@ -24,7 +24,7 @@ public class SearchParsingHandler {
 	private static final String AREA = "areaName";
 	private static final String COUNTRY = "country";
 	private static final String REGION = "region";
-	private static final String WEATHERURL = "weatherURL";
+	private static final String WEATHERURL = "weatherUrl";
 	//object in all other arrays
 	private static final String VALUE = "value";
 	
@@ -49,6 +49,7 @@ public class SearchParsingHandler {
 		}
 		else {
 			String url = start + key + query + location + end;
+			Log.i("Search url", url);
 			JSONparser jParser;
 			JSONObject json;
 			JSONObject search;
