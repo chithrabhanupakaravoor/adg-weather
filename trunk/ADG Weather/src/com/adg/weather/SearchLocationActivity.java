@@ -29,6 +29,10 @@ public class SearchLocationActivity extends Activity {
 	Context context;
 	SearchParsingHandler sph;
 	ArrayList<SearchObj> so = new ArrayList<SearchObj>();
+	String key = "&key=845adebec4142346121409";
+	String begining ="http://free.worldweatheronline.com/feed/weather.ashx?";
+	String q = "q=";
+	String middle = "&format=json&num_of_days=5";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +53,18 @@ public class SearchLocationActivity extends Activity {
 				}else if(!zip.getText().equals(null)){
 					Intent in = new Intent(SearchLocationActivity.this, WeatherSearch.class);
 					Bundle bun = new Bundle();
-					bun.putString("zip", zip.getText().toString());
-					bun.putString("city", "");
+					String url = begining + q + zip + middle + key;
+					bun.putString("url", url);
 					in.putExtras(bun);
 					//startActivity(in);
 					setResult(1, in);
 					finish();
 					
 				}else{
-					
 					sph = new SearchParsingHandler(city.getText().toString());
 					sph.startParsing();
 					so = sph.getSo();
-				}	
-
-				
+				}		
 			}
 		});
 		
@@ -96,10 +97,15 @@ public class SearchLocationActivity extends Activity {
 	public void sendToActivity(int j){
 		Intent in = new Intent(SearchLocationActivity.this, WeatherSearch.class);
 		Bundle bun = new Bundle();
-		bun.putString("city", so.get(j).getAreaName()+", "+so.get(j).getRegionName()+" "+so.get(j).getContryName() );
-		bun.putString("zip", "");
+		String cityS = so.get(j).getAreaName()+"&"+so.get(j).getRegionName()+","+so.get(j).getContryName();
+//		bun.putString("city", cityS );
+//		bun.putString("zip", zip.getText().toString());
+		String url = begining + q + cityS + middle + key;
+		bun.putString("url", url);
 		in.putExtras(bun);
-		startActivity(in);
+//		startActivity(in);
+		setResult(1, in);
+		finish();
 	}
 
 
