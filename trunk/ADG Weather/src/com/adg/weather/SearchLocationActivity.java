@@ -47,13 +47,12 @@ public class SearchLocationActivity extends Activity {
 		
 		search.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
-
-				if(city.getText().equals(null)&&zip.getText().equals(null)){
+				if(city.getText().toString().equals("")&&zip.getText().toString().equals("")){
 					Toast.makeText(context, "Please enter a city or zipcode to search", Toast.LENGTH_SHORT).show();
-				}else if(!zip.getText().equals(null)){
+				}else if(!zip.getText().toString().equals("")){
 					Intent in = new Intent(SearchLocationActivity.this, WeatherSearch.class);
 					Bundle bun = new Bundle();
-					String url = begining + q + zip + middle + key;
+					String url = begining + q + zip.getText().toString() + middle + key;
 					bun.putString("url", url);
 					in.putExtras(bun);
 					//startActivity(in);

@@ -118,6 +118,10 @@ public class MainActivity extends Activity implements LocationListener {
 		if(resultCode == 1) {
 			Bundle bun = data.getExtras();
 			urlBata = bun.getString("url");
+			Log.i("URL from Search", ""+urlBata);
+			
+			SearchParsingTask searchTask = new SearchParsingTask(getApplicationContext(), urlBata);
+			searchTask.execute((Integer)null);
 		}
 	}
 	
@@ -152,7 +156,7 @@ public class MainActivity extends Activity implements LocationListener {
         alertDialogBuilder.setTitle("Do you want to enable GPS");
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
+				startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 2);
 			}
 		})
         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -199,7 +203,7 @@ public class MainActivity extends Activity implements LocationListener {
 
 
 				Intent in = new Intent(MainActivity.this, SearchLocationActivity.class);
-				startActivity(in);
+				startActivityForResult(in, 1);
 
 			}
 		});
@@ -274,14 +278,17 @@ public class MainActivity extends Activity implements LocationListener {
 		
         gpsButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
-				ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
+				ReverseGeocodingTask rgt = new ReverseGeocodingTask(getApplicationContext());
 				rgt.execute(location, null, null);
 			}
 		});
-     
-        
-        ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
-		rgt.execute(location, null, null);
+        if(!urlBata.equals("")){
+        	FavParsTask fpt = new FavParsTask(myContext);
+        fpt.execute((Integer)null);
+        }else{ 
+        	ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
+        	rgt.execute(location, null, null);
+        }
 		
     }
 
@@ -425,6 +432,48 @@ public class MainActivity extends Activity implements LocationListener {
     	
     }
     
+    public class SearchParsingTask extends AsyncTask {
+
+    	Context context;
+    	String myURL;
+    	
+    	public SearchParsingTask (Context contxt, String theURL) {
+    		this.context = contxt;
+    		this.myURL = theURL;
+    	}
+    	
+    	@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			messageHandler.sendEmptyMessage(9);
+		}
+    	
+    	
+		@Override
+		protected Object doInBackground(Object... params) {
+			
+			parsingHandler = new ParsingHandler(myURL);
+			parsingHandler.startParsing();
+			fiveDay = parsingHandler.getFiveDay();
+			curr = parsingHandler.getCurr();
+			
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Object result) {
+			super.onPostExecute(result);
+			setView(fiveDay, curr);
+			messageHandler.sendEmptyMessage(0);
+			
+		}
+
+		
+    	
+    }
+    
+    
     public class FavParsTask extends AsyncTask{
     	
     	Context contaxt;
@@ -472,6 +521,10 @@ public class MainActivity extends Activity implements LocationListener {
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
+		
+			Log.i("5", ""+fiveDay.size());
+			Log.i("one day", "WeatherCode: "+curr.getWeatherCode());
+			
 			return null;
 		}
 
@@ -491,7 +544,7 @@ public class MainActivity extends Activity implements LocationListener {
 	public class ReverseGeocodingTask extends AsyncTask<Location, Void, Void> {
 		
 		
-
+		String url;
 		Context mContext;
 
 		public ReverseGeocodingTask(Context context) {
@@ -510,7 +563,7 @@ public class MainActivity extends Activity implements LocationListener {
 		protected Void doInBackground(Location... params) {
 			Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
 
-			
+			//Log.i("GeoCoder", "Is present: "+geocoder.isPresent());
 			
 			Location loc = params[0];
 			List<Address> addresses = null;
@@ -539,24 +592,30 @@ public class MainActivity extends Activity implements LocationListener {
 				city = address.getLocality();
 				country = address.getCountryName();
 				addressLine = address.getAddressLine(1);
-
+				Log.i("Address Line", ""+addressLine);
+				
 			}
 			// parsing the Data
 			//String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
-			
-			String url = URL_1 + lat + ".00," + lng + ".00" + URL_2+API_KEY;
-			urlBundle.putString("URL", url);
-			Log.i("URL", url);
+//			if(!urlBata.equals("")){
+//				url =urlBata;
+//				Log.i("FAV URL", url);
+//				urlBundle.putString("URL", url);	
+//			}else{
+				String url = URL_1 + lat + ".00," + lng + ".00" + URL_2+API_KEY;
+				urlBundle.putString("URL", url);
+				Log.i("URL", url);
+//				}
 			parsingHandler = new ParsingHandler(url);
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
 
-			if(addressSearchList != null && addressSearchList.size() > 0) {
-				for(int i=0; i < addressSearchList.size(); i++) {
-					Log.i("Search Results",""+ addressSearchList.get(i).getAddressLine(1));
-				}
-			}
+//			if(addressSearchList != null && addressSearchList.size() > 0) {
+//				for(int i=0; i < addressSearchList.size(); i++) {
+//					Log.i("Search Results",""+ addressSearchList.get(i).getAddressLine(1));
+//				}
+//			}
 			
 			return null;
 		}
