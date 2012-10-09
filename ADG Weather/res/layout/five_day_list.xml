@@ -3,13 +3,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/LightBlue" >
-
+
         <ListView
             android:id="@+id/fiveDayList"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" >
+
         </ListView>
 
     </RelativeLayout> 

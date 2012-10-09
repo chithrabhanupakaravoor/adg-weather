@@ -1,13 +1,8 @@
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-            
                 <EditText
             android:id="@+id/cityState"
             android:padding="7dp"
@@ -36,10 +31,18 @@
             android:id="@+id/searchButt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/cityState"
+            android:layout_alignBottom="@+id/cityState"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/cityState"
-            android:layout_marginRight="18dp"
             android:text="@string/find" />
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/zipcode" >
+        </ListView>
+
         </RelativeLayout>
 
-    </LinearLayout>
