@@ -18,6 +18,7 @@ import com.adg.search.WeatherSearch;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -243,16 +244,19 @@ public class MainActivity extends Activity implements LocationListener {
         
         // Criteria to select best provider
         Criteria criteriaGPS = new Criteria();
-        criteriaGPS.setAccuracy(Criteria.ACCURACY_FINE);
+        //criteriaGPS.setAccuracy(Criteria.ACCURACY_FINE);
         
         
-        Criteria criteriaNet = new Criteria();
-        criteriaNet.setAccuracy(Criteria.ACCURACY_COARSE);
+        //Criteria criteriaNet = new Criteria();
+        //criteriaNet.setAccuracy(Criteria.ACCURACY_COARSE);
         
         //gpsProvider = locationManager.getBestProvider(criteriaGPS, false);
-        provider = locationManager.getBestProvider(criteriaNet, false);
+        provider = locationManager.getBestProvider(criteriaGPS, false);
         
-        if(gpsProvider == null) { 
+        GpsStatus status = locationManager.getGpsStatus(null);
+        Log.i("GpsStatus",""+status.getTimeToFirstFix());
+        
+        if(provider == null) { 
 		// create alert dialog
         	AlertDialog alertDialog = alertDialogBuilder.create();
 			alertDialog.show();
@@ -261,13 +265,9 @@ public class MainActivity extends Activity implements LocationListener {
         //provider = locationManager.getBestProvider(criteria, false);
         location = locationManager.getLastKnownLocation(provider);
         //Location loc2 = locationManager.getLastKnownLocation(gpsProvider);
-//        if(locationManager.isProviderEnabled(gpsProvider)) {
-//        	Log.i("GPS", "GPS enabled");
-//        }
-//        if(locationManager.isProviderEnabled(netProvider)) {
-//        	Log.i("Net", "Network enabled");
-//        }
-//        
+        
+        
+        
         
 		if (location != null) {
 			System.out.println("Provider: " + provider + " has been selected.");
@@ -285,14 +285,15 @@ public class MainActivity extends Activity implements LocationListener {
 			}
 		});
 
-        if(!urlBata.equals("")){
-        	FavParsTask fpt = new FavParsTask(myContext);
-        fpt.execute((Integer)null);
-        }else{ 
+//        if(!urlBata.equals("")){
+//        	FavParsTask fpt = new FavParsTask(myContext);
+//        fpt.execute((Integer)null);
+//        }else{ 
+
         	ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
         	rgt.execute(location, null, null);
-        }
-		
+//        }
+//		
     }
 
 	private void SavePreferences(String key, String coor) {
@@ -564,44 +565,44 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		@Override
 		protected Void doInBackground(Location... params) {
-//			Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
-//
-//			
-//			
-//			Location loc = params[0];
-//			List<Address> addresses = null;
-//			try {
-//				// Call the synchronous getFromLocation() method by passing in
-//				
-//				// the lat/long values.
-//				
-//				//addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
-//				
-//				addresses = geocoder.getFromLocation(loc.getLatitude(),
-//						loc.getLongitude(), 1);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			if (addresses != null && addresses.size() > 0) {
-//				Address address = addresses.get(0);
-//				// Format the first line of address (if available), city, and
-//				// country name.
-//				addressText = String.format(
-//						"%s, %s, %s",
-//						address.getMaxAddressLineIndex() > 0 ? address
-//								.getAddressLine(0) : "", address.getLocality(),
-//						address.getCountryName());
-//
-//				city = address.getLocality();
-//				country = address.getCountryName();
-//				addressLine = address.getAddressLine(1);
-//
-//			}
+
+			Geocoder geocoder = new Geocoder(mContext);
+
+			//Log.i("GeoCoder", "Is present: "+geocoder.isPresent());
+			
+			Location loc = params[0];
+			List<Address> addresses = null;
+			try {
+				// Call the synchronous getFromLocation() method by passing in
+				
+				// the lat/long values.
+				
+				//addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
+				
+				addresses = geocoder.getFromLocation(loc.getLatitude(),
+						loc.getLongitude(), 1);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if (addresses != null && addresses.size() > 0) {
+				Address address = addresses.get(0);
+				// Format the first line of address (if available), city, and
+				// country name.
+				addressText = String.format(
+						"%s, %s, %s",
+						address.getMaxAddressLineIndex() > 0 ? address
+								.getAddressLine(0) : "", address.getLocality(),
+						address.getCountryName());
+
+				city = address.getLocality();
+				country = address.getCountryName();
+				addressLine = address.getAddressLine(1);
+				Log.i("Address Line", ""+addressLine);
+				
+			}
+
 			// parsing the Data
 			//String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
-			
-			lat = 44;
-			lng = -88;
 			
 			
 			url = URL_1 + lat + ".00," + lng + ".00" + URL_2+API_KEY;
