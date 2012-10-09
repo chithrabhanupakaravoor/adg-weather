@@ -61,7 +61,7 @@ public class SearchParsingHandler {
 			try{
 				search = json.getJSONObject(SEARCH);
 				JSONArray result = search.getJSONArray(RESULT);
-				for(int i = 0; i < search.length(); i++){
+				for(int i = 0; i < result.length(); i++){
 					//SearchObj
 					SearchObj sear = new SearchObj();
 					//main array

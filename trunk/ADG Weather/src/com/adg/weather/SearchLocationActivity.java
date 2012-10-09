@@ -21,11 +21,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchLocationActivity extends Activity {
 
@@ -133,6 +135,7 @@ public class SearchLocationActivity extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			mh.sendEmptyMessage(6);
+			lv = (ListView) findViewById(R.id.listView1);
 		}
 		@Override
 		protected Object doInBackground(Object... arg0) {
@@ -146,15 +149,26 @@ public class SearchLocationActivity extends Activity {
 		@Override
 		protected void onPostExecute(Object result) {
 			super.onPostExecute(result);
-			Log.i("city parsing", so.toString());
-			lv = (ListView) findViewById(R.layout.find_location);
-			searchAdapter = new SearchAdapter(context, so);
+			Log.i("city parsing", ""+so.size());
+			searchAdapter = new SearchAdapter(getApplicationContext(), so);
 			lv.setAdapter(searchAdapter);
 			mh.sendEmptyMessage(0);
+			lv.setOnItemClickListener(new OnItemClickListener(){
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					Intent in = new Intent();
+					Bundle bun = new Bundle();
+					String url = begining + q + so.get(arg2).getLatitude()+","+so.get(arg2).getLongitude() + middle + key;
+					Log.i("Find url", url);
+					bun.putString("url", url);
+					in.putExtras(bun);
+					//startActivity(in);
+					setResult(1, in);
+					finish();	
+				}
+			});
 			//openContextMenu(view);
 		}
-
-		
 		
 	}
 
