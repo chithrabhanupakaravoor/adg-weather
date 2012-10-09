@@ -41,8 +41,11 @@ public class SearchAdapter extends BaseAdapter{
 		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		child = li.inflate(R.layout.search_item, null);
 		loc = (TextView) child.findViewById(R.id.searchLocation);
-		
-		loc.setText(serArr.get(arg0).getAreaName()+", "+serArr.get(arg0).getRegionName()+ " "+serArr.get(arg0).getContryName());
+		if(serArr.size() == 0){
+			loc.setText("There are no locations that you requested");
+		}else{
+		loc.setText(serArr.get(arg0).getAreaName()+", "+serArr.get(arg0).getRegionName()+ "\n"+serArr.get(arg0).getContryName());
+		}
 		return child;
 	}
 	
