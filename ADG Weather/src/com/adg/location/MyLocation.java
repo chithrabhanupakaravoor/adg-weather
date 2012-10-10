@@ -4,38 +4,19 @@ package com.adg.location;
 
 public class MyLocation {
 	
-	long lng;
-	long lat;
 	String address;
-	String country;
+	String urlToParse;
 	
 	public MyLocation() {
 		
 	}
 	
-	public MyLocation(long lg, long lt, String adr, String cou) {
-		this.lng = lg;
-		this.lat = lt;
-		this.address = adr;
-		this.country = cou;
+	public MyLocation(String address, String url) {
+		this.address = address;
+		this.urlToParse = url;
 	}
-
-	public long getLng() {
-		return lng;
-	}
-
-	public void setLng(long lng) {
-		this.lng = lng;
-	}
-
-	public long getLat() {
-		return lat;
-	}
-
-	public void setLat(long lat) {
-		this.lat = lat;
-	}
-
+	
+	
 	public String getAddress() {
 		return address;
 	}
@@ -44,13 +25,17 @@ public class MyLocation {
 		this.address = address;
 	}
 
-	public String getCountry() {
-		return country;
+
+
+	public String getUrlToParse() {
+		return urlToParse;
 	}
-	
-	public void setCountry(String c) {
-		this.country = c;
+
+
+
+	public void setUrlToParse(String urlToParse) {
+		this.urlToParse = urlToParse;
 	}
-	
+
 	
 }

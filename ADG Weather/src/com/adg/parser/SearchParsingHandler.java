@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class SearchParsingHandler {
 	//start
-	private static final String SEARCH = "search_api";
+	private static final String SEARCH_API = "search_api";
 	//main array
 	private static final String RESULT = "result";
 	//object
@@ -59,7 +59,7 @@ public class SearchParsingHandler {
 			
 			json = jParser.getJSONFromUrl(url);
 			try{
-				search = json.getJSONObject(SEARCH);
+				search = json.getJSONObject(SEARCH_API);
 				JSONArray result = search.getJSONArray(RESULT);
 				for(int i = 0; i < result.length(); i++){
 					//SearchObj

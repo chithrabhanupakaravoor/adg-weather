@@ -55,6 +55,8 @@ public class MainActivity extends Activity implements LocationListener {
 
 
 
+	
+
 	//shared prefs
 	public static final String PREF_FILE = "ADGWeatherPrefs";
 	private SharedPreferences sharedPreferences;
@@ -62,7 +64,6 @@ public class MainActivity extends Activity implements LocationListener {
 	public static final String API_KEY = "845adebec4142346121409";
 	public static final String URL_1 = "http://free.worldweatheronline.com/feed/weather.ashx?q=";
 	public static final String URL_2 = "&format=json&num_of_days=5&key=";
-	
 	
 	
 	TextView descText;
@@ -74,7 +75,7 @@ public class MainActivity extends Activity implements LocationListener {
 	TextView minText;
 	
 	
-	ImageButton searchButton;
+	Button searchButton;
 	Button gpsButton;
 	Button savedLocButton;
 	Button saveToFaveButton;
@@ -97,7 +98,9 @@ public class MainActivity extends Activity implements LocationListener {
 	public String state = "";
 	public String addressLine = "";
 	public String favoriteUrl;
-	
+	public String theZIP = "";
+	String searchLat = "";
+	String searchLng = "";
 	
 	ImageView iv;
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
@@ -122,6 +125,22 @@ public class MainActivity extends Activity implements LocationListener {
 			Bundle bun = data.getExtras();
 			urlBata = bun.getString("url");
 			Log.i("URL from Search", ""+urlBata);
+			addressLine = bun.getString("location");
+			favoriteUrl = bun.getString("url");
+			searchLat = bun.getString("lat");
+			searchLng = bun.getString("lng");
+			theZIP = "";
+			
+			SearchParsingTask searchTask = new SearchParsingTask(getApplicationContext(), urlBata);
+			searchTask.execute((Integer)null);
+		}
+		if(resultCode == 2) {
+			Bundle bun = data.getExtras();
+			urlBata = bun.getString("url");
+			Log.i("URL from Search", ""+urlBata);
+			//addressLine = bun.getString("location");
+			favoriteUrl = bun.getString("url");
+			theZIP = bun.getString("zip");
 			
 			SearchParsingTask searchTask = new SearchParsingTask(getApplicationContext(), urlBata);
 			searchTask.execute((Integer)null);
@@ -132,7 +151,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-    
+        
         favoriteLocations.clear();
         
         myContext = getApplicationContext();
@@ -150,7 +169,7 @@ public class MainActivity extends Activity implements LocationListener {
         gpsButton = (Button) findViewById(R.id.gpsButton);
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
         registerForContextMenu(savedLocButton);
-        searchButton = (ImageButton) findViewById(R.id.searchButton);
+        searchButton = (Button) findViewById(R.id.searchButton);
         saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
         
 
@@ -191,23 +210,8 @@ public class MainActivity extends Activity implements LocationListener {
         
         searchButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
-
-//
-//				if(searchQueryCity.getText().equals(null)||searchQueryCountry.getText().equals(null)){
-//					Toast.makeText(myContext, "Please enter and city and country to search", Toast.LENGTH_SHORT).show();
-//				}else{
-//					Intent in = new Intent(MainActivity.this, WeatherSearch.class);
-//					Bundle bun = new Bundle();
-//					bun.putString("city", searchQueryCity.getText().toString());
-//					bun.putString("country", searchQueryCountry.getText().toString());
-//					in.putExtras(bun);
-//					startActivity(in);
-//				}	
-
-
 				Intent in = new Intent(MainActivity.this, SearchLocationActivity.class);
 				startActivityForResult(in, 1);
-
 			}
 		});
          
@@ -219,8 +223,9 @@ public class MainActivity extends Activity implements LocationListener {
         saveToFaveButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				String key = addressLine;
-				String vals = ""+lng+"~"+lat+"~"+country;
-				Log.i("Saving Location", key+" Coords"+vals);
+				//String vals = ""+lng+"~"+lat+"~"+country;
+				String vals = favoriteUrl;
+				Log.i("Saving Location", key+" URL: "+vals);
 				SavePreferences(key,vals);
 			}
 		});
@@ -241,20 +246,8 @@ public class MainActivity extends Activity implements LocationListener {
 		
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        
-        // Criteria to select best provider
         Criteria criteriaGPS = new Criteria();
-        //criteriaGPS.setAccuracy(Criteria.ACCURACY_FINE);
-        
-        
-        //Criteria criteriaNet = new Criteria();
-        //criteriaNet.setAccuracy(Criteria.ACCURACY_COARSE);
-        
-        //gpsProvider = locationManager.getBestProvider(criteriaGPS, false);
         provider = locationManager.getBestProvider(criteriaGPS, false);
-        
-        GpsStatus status = locationManager.getGpsStatus(null);
-        Log.i("GpsStatus",""+status.getTimeToFirstFix());
         
         if(provider == null) { 
 		// create alert dialog
@@ -262,13 +255,8 @@ public class MainActivity extends Activity implements LocationListener {
 			alertDialog.show();
         }
 
-        //provider = locationManager.getBestProvider(criteria, false);
         location = locationManager.getLastKnownLocation(provider);
-        //Location loc2 = locationManager.getLastKnownLocation(gpsProvider);
-        
-        
-        
-        
+
 		if (location != null) {
 			System.out.println("Provider: " + provider + " has been selected.");
 			onLocationChanged(location);
@@ -277,25 +265,42 @@ public class MainActivity extends Activity implements LocationListener {
 		}
 		
 		
+		Button GPS2 = (Button) findViewById(R.id.gpsButton);
 		
-        gpsButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View view){
-				ReverseGeocodingTask rgt = new ReverseGeocodingTask(getApplicationContext());
+		GPS2.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				
+				Log.i("GPS Button", "clicked");
+				
+				locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		        Criteria criteriaGPS = new Criteria();
+		        provider = locationManager.getBestProvider(criteriaGPS, false);
+		        
+//		        if(provider == null) { 
+//				// create alert dialog
+//		        	AlertDialog alertDialog = alertDialogBuilder.create();
+//					alertDialog.show();
+//		        }
+
+		        location = locationManager.getLastKnownLocation(provider);
+				
+				
+				ReverseGeocodingTask rgt = new ReverseGeocodingTask(
+						getApplicationContext());
 				rgt.execute(location, null, null);
 			}
 		});
-
-//        if(!urlBata.equals("")){
-//        	FavParsTask fpt = new FavParsTask(myContext);
-//        fpt.execute((Integer)null);
-//        }else{ 
-
-        	ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
-        	rgt.execute(location, null, null);
-//        }
-//		
+		ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
+		rgt.execute(location, null, null);
     }
 
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		return super.onOptionsItemSelected(item);
+	}
+	
 	private void SavePreferences(String key, String coor) {
 		sharedPreferences = getApplicationContext().getSharedPreferences(
 				PREF_FILE, 0);
@@ -311,6 +316,17 @@ public class MainActivity extends Activity implements LocationListener {
 		}
 	}
 
+	private void deleteSavedLocation(String address) {
+		sharedPreferences = getApplicationContext().getSharedPreferences(PREF_FILE, 0);
+		Map allLocations = sharedPreferences.getAll();
+		if(allLocations.containsKey(address)) {
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.remove(address);
+			editor.commit();
+			Toast.makeText(myContext, address+" removed from favorites", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
 	private void LoadPreferences() {
 		sharedPreferences = getApplicationContext().getSharedPreferences(PREF_FILE, 0);
 		Map allLocations = sharedPreferences.getAll();
@@ -321,31 +337,34 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		
 		for(int i = 0; i < keys.size(); i++ ) {
-			MyLocation ml = new MyLocation();
-			String[] coords = values.get(i).split("\\~");
-			//String [] local = keys.get(i).split("^");
+			MyLocation myLocation = new MyLocation();
 			
-			
-			long lg = Long.parseLong(coords[0]);
-			long lt = Long.parseLong(coords[1]);
-			String cou = coords[2];
 			String adr = keys.get(i);
+			myLocation.setAddress(adr);
 			
-			ml.setAddress(adr);
-			ml.setLat(lt);
-			ml.setLng(lg);
-			ml.setCountry(cou);
+			String theUrl = values.get(i);
+			myLocation.setUrlToParse(theUrl);
 			
-			favoriteLocations.add(ml);
+			favoriteLocations.add(myLocation);
 		}
 	}
 
     /* Request updates at startup */
     @Override
-    protected void onResume() {
-      super.onResume();
-      locationManager.requestLocationUpdates(provider, 400, 1, this);
-    }
+	protected void onResume() {
+		super.onResume();
+		locationManager.requestLocationUpdates(provider, 400, 1, this);
+		LoadPreferences();
+		for (int i = 0; i < favoriteLocations.size(); i++) {
+			if (favoriteLocations.get(i).getAddress()
+					.equals(cityText.getText().toString())) {
+				saveToFaveButton.setText("Remove from Favorites");
+			} else {
+				saveToFaveButton.setText("Save to Favorites");
+			}
+		}
+		favoriteLocations.clear();
+	}
 
     /* Remove the locationlistener updates when Activity is paused */
     @Override
@@ -376,11 +395,7 @@ public class MainActivity extends Activity implements LocationListener {
     }
    
     
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity, menu);
-        return true;
-    }
+
 
     @Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -390,6 +405,7 @@ public class MainActivity extends Activity implements LocationListener {
 		menu.setHeaderTitle("Saved Locations"); 
 		for(int j = 0; j < favoriteLocations.size(); j++) {
 			menu.add(0, v.getId(), 0, favoriteLocations.get(j).getAddress());
+			
 		}
 		
 		//menu.add(0, v.getId(), 0, "Option 2");
@@ -399,15 +415,15 @@ public class MainActivity extends Activity implements LocationListener {
 	public boolean onContextItemSelected(MenuItem item) {
     	for(int i = 0; i < favoriteLocations.size(); i++) {
     		if(item.getTitle().equals(favoriteLocations.get(i).getAddress())) {
-    			long lat = favoriteLocations.get(i).getLat();
-    			long lng = favoriteLocations.get(i).getLng();
     			String ads = favoriteLocations.get(i).getAddress();
-    			//String country = favoriteLocations.get(i).getCountry();
-    			
-    			FavParsTask favoriteParsingTask = new FavParsTask(myContext, lng, lat, ads, "");
+    			String url = favoriteLocations.get(i).getUrlToParse();
+    	
+    			FavParsTask favoriteParsingTask = new FavParsTask(myContext, ads, url);
     			favoriteParsingTask.execute((Integer)null);
     		}
     	}
+    	
+    	
 		return true;
 	}
     
@@ -456,6 +472,44 @@ public class MainActivity extends Activity implements LocationListener {
 		@Override
 		protected Object doInBackground(Object... params) {
 			
+			
+			if (!theZIP.equals("")) {
+				Geocoder geocoder = new Geocoder(context);
+				List<Address> addresses = null;
+				try {
+					addresses = geocoder.getFromLocationName(theZIP, 1);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				if (addresses.size() > 0) {
+					Log.i("Address by zip", ""
+							+ addresses.get(0).getAddressLine(0));
+					addressLine = addresses.get(0).getAddressLine(0);
+				}
+			}
+			else {
+				Geocoder geocoder = new Geocoder(context);
+				List<Address> addresses = null;
+				try {
+					
+					Double slat = Double.parseDouble(searchLat);
+					Double slng = Double.parseDouble(searchLng);
+					
+					addresses = geocoder.getFromLocation(slat,
+							slng, 1);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				if (addresses.size() > 0) {
+					Log.i("Address by zip", ""
+							+ addresses.get(0).getAddressLine(0));
+					addressLine = addresses.get(0).getAddressLine(0);
+				}
+			}
+			
+			
 			parsingHandler = new ParsingHandler(myURL);
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
@@ -481,23 +535,22 @@ public class MainActivity extends Activity implements LocationListener {
     public class FavParsTask extends AsyncTask{
     	
     	Context contaxt;
-    	long longitude;
-    	long latitude;
+    	
     	String address;
-    	String countr;
+    	String parseURL;
     	
     	public FavParsTask(Context c){
     		super();
     		this.contaxt = c;
     	}
     	
-    	public FavParsTask(Context c, long lg, long lt, String adrs, String cou){
+    	
+    	
+    	public FavParsTask(Context c, String adrs, String url){
     		super();
     		this.contaxt = c;
-    		this.longitude = lg;
-    		this.latitude = lt;
     		this.address = adrs;
-    		this.countr = cou;
+    		this.parseURL = url;
     	}
     	
     	@Override
@@ -510,24 +563,25 @@ public class MainActivity extends Activity implements LocationListener {
 
 		@Override
 		protected Object doInBackground(Object... arg0) {
-			String url;
-			if(!urlBata.equals("")){
-			url =urlBata;
-			Log.i("FAV URL", url);
-			urlBundle.putString("URL", url);	
-			}else{
-			url = URL_1 + latitude + ".00," + longitude + ".00" + URL_2+API_KEY;
-			Log.i("FAV URL", url);
-			urlBundle.putString("URL", url);
-			}
-
-			parsingHandler = new ParsingHandler(url);
+//			String url;
+//			if (!urlBata.equals("")) {
+//				url = urlBata;
+//				Log.i("FAV URL", url);
+//				urlBundle.putString("URL", url);
+//			} else {
+//				url = URL_1 + latitude + ".00," + longitude + ".00" + URL_2
+//						+ API_KEY;
+//				Log.i("FAV URL", url);
+//				urlBundle.putString("URL", url);
+//			}
+			Log.i("Fave Parse URL",""+parseURL);
+			parsingHandler = new ParsingHandler(parseURL);
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
 		
-			Log.i("5", ""+fiveDay.size());
-			Log.i("one day", "WeatherCode: "+curr.getWeatherCode());
+			//Log.i("5", ""+fiveDay.size());
+			//Log.i("one day", "WeatherCode: "+curr.getWeatherCode());
 			
 			return null;
 		}
@@ -601,31 +655,16 @@ public class MainActivity extends Activity implements LocationListener {
 				
 			}
 
-			// parsing the Data
-			//String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
-			
-			url = URL_1 + lat + ".00," + lng + ".00" + URL_2+API_KEY;
+			String url = URL_1 + lat + ".00," + lng + ".00" + URL_2 + API_KEY;
+
 			urlBundle.putString("URL", url);
+			favoriteUrl = url;
 			Log.i("URL", url);
-//			if(!urlBata.equals("")){
-//				url =urlBata;
-//				Log.i("FAV URL", url);
-//				urlBundle.putString("URL", url);	
-//			}else{
-				String url = URL_1 + lat + ".00," + lng + ".00" + URL_2+API_KEY;
-				urlBundle.putString("URL", url);
-				Log.i("URL", url);
-//				}
+
 			parsingHandler = new ParsingHandler(url);
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
-
-//			if(addressSearchList != null && addressSearchList.size() > 0) {
-//				for(int i=0; i < addressSearchList.size(); i++) {
-//					Log.i("Search Results",""+ addressSearchList.get(i).getAddressLine(1));
-//				}
-//			}
 			
 			return null;
 		}

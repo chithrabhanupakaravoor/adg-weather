@@ -38,7 +38,7 @@ public class SearchLocationActivity extends Activity {
 	Button search;
 	Context context;
 	SearchParsingHandler sph;
-	ArrayList<SearchObj> so = new ArrayList<SearchObj>();
+	ArrayList<SearchObj> searchObjectArray = new ArrayList<SearchObj>();
 	String key = "&key=845adebec4142346121409";
 	String begining ="http://free.worldweatheronline.com/feed/weather.ashx?";
 	String q = "q=";
@@ -94,14 +94,16 @@ public class SearchLocationActivity extends Activity {
 			String url = begining + q + zip.getText().toString() + middle + key;
 			Log.i("Find url", url);
 			bun.putString("url", url);
+			bun.putString("zip",zip.getText().toString());
 			in.putExtras(bun);
-			setResult(1, in);
+			setResult(2, in);
 			finish();	
 		}else{
 			lookingForCity LFC = new lookingForCity(context, view, city.getText().toString());
 			LFC.execute((Integer)null);
 		}		
 	}
+
 	public class lookingForCity extends AsyncTask{
 		
 		Context context;
@@ -125,15 +127,17 @@ public class SearchLocationActivity extends Activity {
 			sph = new SearchParsingHandler(cityP);
 			Log.i("City parsing", cityP);
 			sph.startParsing();
-			so = sph.getSo();
+			searchObjectArray = sph.getSo();
+			Log.i("Search Objects Array Size", ""+searchObjectArray.size());
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Object result) {
 			super.onPostExecute(result);
-			Log.i("city parsing", ""+so.size());
-			searchAdapter = new SearchAdapter(getApplicationContext(), so);
+			Log.i("city parsing", ""+searchObjectArray.size());
+			searchAdapter = new SearchAdapter(getApplicationContext(), searchObjectArray);
+
 			lv.setAdapter(searchAdapter);
 			mh.sendEmptyMessage(0);
 			lv.setOnItemClickListener(new OnItemClickListener(){
@@ -141,9 +145,12 @@ public class SearchLocationActivity extends Activity {
 						int arg2, long arg3) {
 					Intent in = new Intent();
 					Bundle bun = new Bundle();
-					String url = begining + q + so.get(arg2).getLatitude()+","+so.get(arg2).getLongitude() + middle + key;
+					String url = begining + q + searchObjectArray.get(arg2).getLatitude()+","+searchObjectArray.get(arg2).getLongitude() + middle + key;
 					Log.i("Find url", url);
 					bun.putString("url", url);
+					bun.putString("location", searchObjectArray.get(arg2).getAreaName()+", "+searchObjectArray.get(arg2).getRegionName());
+					bun.putString("lat", ""+searchObjectArray.get(arg2).getLatitude());
+					bun.putString("lng", ""+searchObjectArray.get(arg2).getLongitude());
 					in.putExtras(bun);
 					setResult(1, in);
 					finish();	
