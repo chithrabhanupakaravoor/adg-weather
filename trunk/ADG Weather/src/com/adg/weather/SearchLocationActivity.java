@@ -15,11 +15,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -59,25 +61,38 @@ public class SearchLocationActivity extends Activity {
 		
 		search.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
-
-				if(city.getText().toString().equals("")&&zip.getText().toString().equals("")){
-					Toast.makeText(context, "Please enter a city or zipcode to search", Toast.LENGTH_SHORT).show();
-				}else if(!zip.getText().toString().equals("")){
-					Intent in = new Intent();
-					Bundle bun = new Bundle();
-					String url = begining + q + zip.getText().toString() + middle + key;
-					Log.i("Find url", url);
-					bun.putString("url", url);
-					in.putExtras(bun);
-					//startActivity(in);
-					setResult(1, in);
-					finish();	
-				}else{
-					lookingForCity LFC = new lookingForCity(context, view, city.getText().toString());
-					LFC.execute((Integer)null);
-				}		
+				getText(view);
 			}
 		});
+		
+		city.setOnKeyListener(new OnKeyListener(){
+			public boolean onKey(View v, int keyCode, KeyEvent event){
+				if((event.getAction() ==  KeyEvent.ACTION_DOWN) && 
+						(keyCode == KeyEvent.KEYCODE_ENTER)){
+					return true;
+				}
+				return false;
+			}
+		});
+	}
+	
+	public void getText(View view){
+		if(city.getText().toString().equals("")&&zip.getText().toString().equals("")){
+			Toast.makeText(context, "Please enter a city or zipcode to search", Toast.LENGTH_SHORT).show();
+		}else if(!zip.getText().toString().equals("")){
+			Intent in = new Intent();
+			Bundle bun = new Bundle();
+			String url = begining + q + zip.getText().toString() + middle + key;
+			Log.i("Find url", url);
+			bun.putString("url", url);
+			in.putExtras(bun);
+			//startActivity(in);
+			setResult(1, in);
+			finish();	
+		}else{
+			lookingForCity LFC = new lookingForCity(context, view, city.getText().toString());
+			LFC.execute((Integer)null);
+		}		
 	}
 	public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
