@@ -57,8 +57,6 @@ public class SearchLocationActivity extends Activity {
 		context = getApplicationContext();
 		mh = new MessageHandler(this);
 		
-		
-		
 		search.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				getText(view);
@@ -66,6 +64,16 @@ public class SearchLocationActivity extends Activity {
 		});
 		
 		city.setOnKeyListener(new OnKeyListener(){
+			public boolean onKey(View v, int keyCode, KeyEvent event){
+				if((event.getAction() ==  KeyEvent.ACTION_DOWN) && 
+						(keyCode == KeyEvent.KEYCODE_ENTER)){
+					getText(v);
+					return true;
+				}
+				return false;
+			}
+		});
+		zip.setOnKeyListener(new OnKeyListener(){
 			public boolean onKey(View v, int keyCode, KeyEvent event){
 				if((event.getAction() ==  KeyEvent.ACTION_DOWN) && 
 						(keyCode == KeyEvent.KEYCODE_ENTER)){
@@ -87,7 +95,6 @@ public class SearchLocationActivity extends Activity {
 			Log.i("Find url", url);
 			bun.putString("url", url);
 			in.putExtras(bun);
-			//startActivity(in);
 			setResult(1, in);
 			finish();	
 		}else{
@@ -95,46 +102,6 @@ public class SearchLocationActivity extends Activity {
 			LFC.execute((Integer)null);
 		}		
 	}
-	public void onCreateContextMenu(ContextMenu menu, View v,
-            ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.setHeaderTitle("Locations"); 
-		for(int j = 0; j < so.size(); j++) {
-			menu.add(0, v.getId(), 0, so.get(j).getAreaName()+", "+so.get(j).getRegionName()+" "+so.get(j).getContryName());
-		}
-	}
-	
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case 0:
-			sendToActivity(0);
-			return true;
-		case 1:
-			sendToActivity(1);
-			return true;
-		case 2:
-			sendToActivity(2);
-			return true;
-		}
-		return super.onContextItemSelected(item);
-	}
-	
-	public void sendToActivity(int j){
-		Intent in = new Intent();
-		Bundle bun = new Bundle();
-		String cityS = so.get(j).getAreaName()+"&"+so.get(j).getRegionName()+","+so.get(j).getContryName();
-//		bun.putString("city", cityS );
-//		bun.putString("zip", zip.getText().toString());
-		String url = begining + q + cityS + middle + key;
-		bun.putString("url", url);
-		in.putExtras(bun);
-//		startActivity(in);
-		setResult(1, in);
-		finish();
-	}
-
-
 	public class lookingForCity extends AsyncTask{
 		
 		Context context;
@@ -178,14 +145,10 @@ public class SearchLocationActivity extends Activity {
 					Log.i("Find url", url);
 					bun.putString("url", url);
 					in.putExtras(bun);
-					//startActivity(in);
 					setResult(1, in);
 					finish();	
 				}
 			});
-			//openContextMenu(view);
-		}
-		
+		}	
 	}
-
 }
