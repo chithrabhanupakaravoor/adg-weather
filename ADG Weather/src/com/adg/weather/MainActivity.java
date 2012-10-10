@@ -604,7 +604,6 @@ public class MainActivity extends Activity implements LocationListener {
 			// parsing the Data
 			//String key = "&format=json&num_of_days=5&key=845adebec4142346121409";
 			
-			
 			url = URL_1 + lat + ".00," + lng + ".00" + URL_2+API_KEY;
 			urlBundle.putString("URL", url);
 			Log.i("URL", url);

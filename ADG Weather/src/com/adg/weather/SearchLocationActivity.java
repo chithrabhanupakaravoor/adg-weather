@@ -69,6 +69,7 @@ public class SearchLocationActivity extends Activity {
 			public boolean onKey(View v, int keyCode, KeyEvent event){
 				if((event.getAction() ==  KeyEvent.ACTION_DOWN) && 
 						(keyCode == KeyEvent.KEYCODE_ENTER)){
+					getText(v);
 					return true;
 				}
 				return false;
