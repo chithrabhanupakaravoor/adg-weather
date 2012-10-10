@@ -98,7 +98,7 @@
             android:layout_toRightOf="@+id/maxTextView"
             android:text="MIN"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
         <TextView
             android:id="@+id/temp"
             style="@style/myPadding"
@@ -108,17 +108,7 @@
             android:layout_toRightOf="@+id/weatherIcon"
             android:text="F"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="90sp" />
-
-        <Button
-            android:id="@+id/saveToFaveButton"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/location"
-            android:background="@drawable/largeblackbutton"
-            android:text="Save to Favorites"
-            android:textColor="@color/White" />
+            android:textSize="70sp" />
 
         <Button
             android:id="@+id/button5Day"
@@ -134,15 +124,15 @@
 
 
 
-        <ImageButton
+        <Button
             android:id="@+id/searchButton"
             android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_alignRight="@+id/weatherIcon"
             android:layout_alignTop="@+id/button5Day"
             android:background="@drawable/largeblackbutton"
-            android:src="@drawable/ic_action_search"
-            android:text="Button" />
+            android:text="Search"
+            android:textColor="@color/White" />
 
         <Button
             android:id="@+id/gpsButton"
@@ -152,6 +142,16 @@
             android:layout_alignTop="@+id/searchButton"
             android:background="@drawable/gps_icon"
             android:text=" " />
+
+        <Button
+            android:id="@+id/saveToFaveButton"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_alignRight="@+id/saveLocButton"
+            android:layout_alignTop="@+id/location"
+            android:background="@drawable/largeblackbutton"
+            android:text="Save to Favorites"
+            android:textColor="@color/White" />
 
     </RelativeLayout>
 
