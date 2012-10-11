@@ -3,14 +3,22 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/LightBlue" >
-
+
+        <TextView
+            android:id="@+id/fiveDayCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="city"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
         <ListView
             android:id="@+id/fiveDayList"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" >
-
+            android:layout_below="@+id/fiveDayCity" >
         </ListView>
 
     </RelativeLayout> 
