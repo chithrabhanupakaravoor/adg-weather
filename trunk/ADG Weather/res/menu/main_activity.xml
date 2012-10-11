@@ -1,8 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings" />
     <item android:id="@+id/search"
-        android:title="Search" android:menuCategory="system"/>
+        android:title="Search by City/ZIP"/>
     <item android:id="@+id/five_day"
         android:title="5 Day Forecast" />
+    <item android:id="@+id/fav_locations" 
+        android:title="Favorite Locations" />
+    <item android:id="@+id/current"
+        android:title="Find Current Location" />      
 </menu>

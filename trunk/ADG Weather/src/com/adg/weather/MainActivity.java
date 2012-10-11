@@ -41,6 +41,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,10 +53,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements LocationListener {
-
-
-
-	
 
 	//shared prefs
 	public static final String PREF_FILE = "ADGWeatherPrefs";
@@ -151,6 +148,9 @@ public class MainActivity extends Activity implements LocationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
+
+        
+        
         
         favoriteLocations.clear();
         
@@ -292,14 +292,12 @@ public class MainActivity extends Activity implements LocationListener {
 		});
 		ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
 		rgt.execute(location, null, null);
+		
+		
+		
+		
+		
     }
-
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		return super.onOptionsItemSelected(item);
-	}
 	
 	private void SavePreferences(String key, String coor) {
 		sharedPreferences = getApplicationContext().getSharedPreferences(
@@ -505,6 +503,16 @@ public class MainActivity extends Activity implements LocationListener {
 				if (addresses.size() > 0) {
 					Log.i("Address by zip", ""
 							+ addresses.get(0).getAddressLine(0));
+					String currentAdd = addresses.get(0).getPostalCode();
+					
+					try {
+						addresses = geocoder.getFromLocationName(currentAdd, 1);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
 					addressLine = addresses.get(0).getAddressLine(0);
 				}
 			}
@@ -673,6 +681,19 @@ public class MainActivity extends Activity implements LocationListener {
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			setView(fiveDay, curr);
+			
+			
+//			LoadPreferences();
+//	        for(int j = 0; j < favoriteLocations.size(); j++) {
+//	        	Log.i("", ""+favoriteLocations.get(j).getAddress());
+//	        	String comp = favoriteLocations.get(j).getAddress();
+//	        	if(addressLine.equals(comp)) {
+//	        		Log.i("", ""+comp+" exists in favorites and is to be deleted");
+//	        		deleteSavedLocation(comp);
+//	        		Log.i("Deletion", comp+" deleted");
+//	        	}
+//	        }
+			
 		
 		}
 	}

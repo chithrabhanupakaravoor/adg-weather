@@ -6,8 +6,8 @@
     <string name="title_activity_main">ADG Weather</string>
     <string name="fiveday">5 Day Forecast</string>
     <string name="zip">Zipcode</string>
-    <string name="city">City, Sate</string>
-    <string name="find">Find</string>
+    <string name="city">City, State</string>
+    <string name="find">Search</string>
     <string name="close">Close</string>
     <string name="ecity">Enter City</string>
     <string name="ecountry">Enter Country</string>
