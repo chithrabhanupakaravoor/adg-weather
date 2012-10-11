@@ -783,10 +783,10 @@ public class MainActivity extends Activity implements LocationListener {
 		WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
 		cityText.setText(addressLine);
 		iv.setImageResource(wc.getDrawableIcon());
-		cloudText.setText(cloudCover);
-    	humidityText.setText(humidity);
-    	pressureText.setText(pressure);
-    	visibText.setText(visibility);
+		cloudText.setText("Cloud Cover: "+cloudCover);
+    	humidityText.setText("Humidity: "+humidity);
+    	pressureText.setText("Pressure: "+pressure);
+    	visibText.setText("Visibility; "+visibility);
 		windText.setText("The wind is blowing "+windDir+" at "+ windMph +" mph");
 		
 		showViews();
