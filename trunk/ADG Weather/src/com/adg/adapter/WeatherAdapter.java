@@ -121,13 +121,13 @@ public class WeatherAdapter extends BaseAdapter {
 		}
 		
 		temp.setText(currTemp);
-		val.setText(fiveDay.get(arg0).getValue());
+		val.setText(fiveDay.get(arg0).getValue()+",  ");
 		
 		
 		ImageView iv = (ImageView) child.findViewById(R.id.fiveDayImage);
 		int weatherCode = Integer.parseInt(fiveDay.get(arg0).getWeatherCode());
 		WeatherCode wc = new WeatherCode(weatherCode);
-		iv.setImageResource(wc.getDrawableIcon());
+		iv.setImageResource(wc.getDrawableIconSmall());
 		
 		Log.i("WeatherAdapter", fiveDay.get(arg0).getDate());
 		Log.i("WeatherAdapter", fiveDay.get(arg0).getValue());

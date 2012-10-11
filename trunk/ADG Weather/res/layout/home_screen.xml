@@ -3,17 +3,18 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/LightBlue" >
-
+
         <TextView
             android:id="@+id/location"
-            style="@style/myPadding"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="5dp"
+
+            android:background="@color/SteelBlue"
             android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/Chartreuse" />
 
         <ImageView
             android:id="@+id/weatherIcon"
@@ -193,14 +194,15 @@
             android:layout_below="@+id/visibility"
             android:text="Wind"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
         <ToggleButton
             android:id="@+id/toggleButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/location"
-            android:layout_toLeftOf="@+id/saveToFaveButton"
-            android:checked="true"
+            android:layout_alignLeft="@+id/saveToFaveButton"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/saveToFaveButton"
+            android:layout_marginTop="5dp"
             android:onClick="onToggleClicked"
             android:textOff="C"
             android:textOn="F" />
