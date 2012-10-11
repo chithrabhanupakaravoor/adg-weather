@@ -4,29 +4,6 @@
         android:layout_height="fill_parent"
         android:background="@color/LightBlue" >
 
-        <Button
-            android:id="@+id/gpsButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="5dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/gps_icon"
-            android:text=" " />
-
-
-        <Button
-            android:id="@+id/saveLocButton"
-            android:layout_width="90dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/largeblackbutton"
-            android:text="Favorite Locations"
-            android:textColor="@color/White" />
-
         <TextView
             android:id="@+id/location"
             style="@style/myPadding"
@@ -46,8 +23,6 @@
             android:layout_below="@+id/location"
             android:layout_marginLeft="5dp"
             android:src="@drawable/lightning128" />
-
-
 
         <TextView
             android:id="@+id/descrip"
@@ -98,7 +73,7 @@
             android:layout_toRightOf="@+id/maxTextView"
             android:text="MIN"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
         <TextView
             android:id="@+id/temp"
             style="@style/myPadding"
@@ -110,48 +85,64 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="70sp" />
 
-        <Button
-            android:id="@+id/button5Day"
-            style="@style/myPadding"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_alignBaseline="@+id/saveLocButton"
-            android:layout_alignBottom="@+id/saveLocButton"
-            android:layout_toLeftOf="@+id/saveLocButton"
-            android:background="@drawable/largeblackbutton"
-            android:text="@string/fiveday"
-            android:textColor="@color/White" />
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true" >
 
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp" >
+
+                <Button
+                    android:id="@+id/saveLocButton"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="fill"
+                    android:background="@drawable/largeblackbutton"
+                    android:text="Favorite Locations"
+                    android:textColor="@color/White" />
+
+                <Button
+                    android:id="@+id/gpsButton"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="fill"
+                    android:background="@drawable/largeblackbutton"
+                    android:text="GPS"
+                    android:textColor="@color/White" />
+
+                <Button
+                    android:id="@+id/searchButton"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="fill"
+                    android:background="@drawable/largeblackbutton"
+                    android:text="Search"
+                    android:textColor="@color/White" />
+
+                <Button
+                    android:id="@+id/button5Day"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="fill"
+                    android:background="@drawable/largeblackbutton"
+                    android:text="@string/fiveday"
+                    android:textColor="@color/White" />
 
-
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            android:layout_alignRight="@+id/weatherIcon"
-            android:layout_alignTop="@+id/button5Day"
-            android:background="@drawable/largeblackbutton"
-            android:text="Search"
-            android:textColor="@color/White" />
-
-        <Button
-            android:id="@+id/gpsButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignLeft="@+id/weatherIcon"
-            android:layout_alignTop="@+id/searchButton"
-            android:background="@drawable/gps_icon"
-            android:text=" " />
+            </TableRow>
+        </TableLayout>
 
         <Button
             android:id="@+id/saveToFaveButton"
             android:layout_width="80dp"
             android:layout_height="50dp"
-            android:layout_alignRight="@+id/saveLocButton"
-            android:layout_alignTop="@+id/location"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:background="@drawable/largeblackbutton"
             android:text="Save to Favorites"
             android:textColor="@color/White" />
 
     </RelativeLayout>
-
