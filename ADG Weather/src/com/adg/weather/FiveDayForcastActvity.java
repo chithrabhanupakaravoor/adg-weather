@@ -26,14 +26,18 @@ public class FiveDayForcastActvity extends Activity{
 	String url = "";
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
 	WeatherAdapter rapter;
+	TextView cityText;
 	ListView lv;
+	String address;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.five_day_list);
 		Bundle urlBundle = getIntent().getExtras();
+		cityText = (TextView) findViewById(R.id.fiveDayCity);
 		url = urlBundle.getString("URL");
+		address = urlBundle.getString("Address");
 		dw = new DownloadWeather(getApplicationContext());
 		dw.execute((Integer)null);
 	}
@@ -77,12 +81,16 @@ public class FiveDayForcastActvity extends Activity{
 						startActivity(in);
 					}
 			});
+			setView(address);
 		}
 		
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
 		}
+	}
+	public void setView(String cityAddress){
+		cityText.setText(cityAddress);
 	}
 	
 }

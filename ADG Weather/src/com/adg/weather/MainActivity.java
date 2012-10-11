@@ -74,7 +74,7 @@ public class MainActivity extends Activity implements LocationListener {
 	TextView humidityText;
 	TextView pressureText;
 	TextView visibText;
-	
+	TextView windText;
 	
 	Button searchButton;
 	Button gpsButton;
@@ -173,6 +173,7 @@ public class MainActivity extends Activity implements LocationListener {
     	humidityText = (TextView) findViewById(R.id.humidity);
     	pressureText = (TextView) findViewById(R.id.pressure);
     	visibText = (TextView) findViewById(R.id.visibility);
+    	windText = (TextView) findViewById(R.id.wind);
     	
         gpsButton = (Button) findViewById(R.id.gpsButton);
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
@@ -447,6 +448,7 @@ public class MainActivity extends Activity implements LocationListener {
     	humidityText.setVisibility(View.GONE);
     	pressureText.setVisibility(View.GONE);
     	visibText.setVisibility(View.GONE);
+    	windText.setVisibility(View.GONE);
     	
     }
     
@@ -463,6 +465,7 @@ public class MainActivity extends Activity implements LocationListener {
     	humidityText.setVisibility(View.VISIBLE);
     	pressureText.setVisibility(View.VISIBLE);
     	visibText.setVisibility(View.VISIBLE);
+    	windText.setVisibility(View.VISIBLE);
     	
     }
     
@@ -535,6 +538,8 @@ public class MainActivity extends Activity implements LocationListener {
 			
 			
 			parsingHandler = new ParsingHandler(myURL);
+			urlBundle.putString("URL", myURL);
+			urlBundle.putString("Address", addressLine);
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
@@ -600,6 +605,8 @@ public class MainActivity extends Activity implements LocationListener {
 //			}
 			Log.i("Fave Parse URL",""+parseURL);
 			parsingHandler = new ParsingHandler(parseURL);
+			urlBundle.putString("URL", parseURL);
+			urlBundle.putString("Address", addressLine);
 			parsingHandler.startParsing();
 			fiveDay = parsingHandler.getFiveDay();
 			curr = parsingHandler.getCurr();
@@ -682,6 +689,7 @@ public class MainActivity extends Activity implements LocationListener {
 			String url = URL_1 + lat + ".00," + lng + ".00" + URL_2 + API_KEY;
 
 			urlBundle.putString("URL", url);
+			urlBundle.putString("Address", addressLine);
 			favoriteUrl = url;
 			Log.i("URL", url);
 
@@ -739,6 +747,9 @@ public class MainActivity extends Activity implements LocationListener {
 		String humidity = curr.getHumidity();
 		String pressure = curr.getPressure();
 		String visibility = curr.getVisibility();
+		String windDir = curr.getWindPoint();
+		String windMph = curr.getMph();
+		String windKmph = curr.getKmph();
 		
 		//=====================================
 		favoriteLocations.clear();
@@ -776,7 +787,7 @@ public class MainActivity extends Activity implements LocationListener {
     	humidityText.setText(humidity);
     	pressureText.setText(pressure);
     	visibText.setText(visibility);
-		
+		windText.setText("The wind is blowing "+windDir+" at "+ windMph +" mph");
 		
 		showViews();
 		messageHandler.sendEmptyMessage(0);
