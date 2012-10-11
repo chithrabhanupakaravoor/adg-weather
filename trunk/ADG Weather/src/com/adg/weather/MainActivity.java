@@ -70,6 +70,10 @@ public class MainActivity extends Activity implements LocationListener {
 	TextView windSpeedText;
 	TextView maxText;
 	TextView minText;
+	TextView cloudText;
+	TextView humidityText;
+	TextView pressureText;
+	TextView visibText;
 	
 	
 	Button searchButton;
@@ -165,7 +169,11 @@ public class MainActivity extends Activity implements LocationListener {
         windSpeedText = (TextView) findViewById(R.id.windSpeed);
         maxText = (TextView) findViewById(R.id.maxTextView);
         minText = (TextView) findViewById(R.id.minTextView);
-        
+        cloudText = (TextView) findViewById(R.id.cloudCover);
+    	humidityText = (TextView) findViewById(R.id.humidity);
+    	pressureText = (TextView) findViewById(R.id.pressure);
+    	visibText = (TextView) findViewById(R.id.visibility);
+    	
         gpsButton = (Button) findViewById(R.id.gpsButton);
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
         registerForContextMenu(savedLocButton);
@@ -435,6 +443,10 @@ public class MainActivity extends Activity implements LocationListener {
     	maxText.setVisibility(View.GONE);
     	minText.setVisibility(View.GONE);
     	iv.setVisibility(View.GONE);
+    	cloudText.setVisibility(View.GONE);
+    	humidityText.setVisibility(View.GONE);
+    	pressureText.setVisibility(View.GONE);
+    	visibText.setVisibility(View.GONE);
     	
     }
     
@@ -447,6 +459,10 @@ public class MainActivity extends Activity implements LocationListener {
     	maxText.setVisibility(View.VISIBLE);
     	minText.setVisibility(View.VISIBLE);
     	iv.setVisibility(View.VISIBLE);
+    	cloudText.setVisibility(View.VISIBLE);
+    	humidityText.setVisibility(View.VISIBLE);
+    	pressureText.setVisibility(View.VISIBLE);
+    	visibText.setVisibility(View.VISIBLE);
     	
     }
     
@@ -701,7 +717,10 @@ public class MainActivity extends Activity implements LocationListener {
 	public void setView(ArrayList<Weather> fd, Weather c){
 		String maxF = fd.get(0).getMaxF();
 		String minF = fd.get(0).getMinF();
-		
+		String cloudCover = curr.getCloudcover();
+		String humidity = curr.getHumidity();
+		String pressure = curr.getPressure();
+		String visibility = curr.getVisibility();
 		
 		
 		//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
@@ -719,6 +738,10 @@ public class MainActivity extends Activity implements LocationListener {
 		WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
 		cityText.setText(addressLine);
 		iv.setImageResource(wc.getDrawableIcon());
+		cloudText.setText(cloudCover);
+    	humidityText.setText(humidity);
+    	pressureText.setText(pressure);
+    	visibText.setText(visibility);
 		
 		
 		showViews();

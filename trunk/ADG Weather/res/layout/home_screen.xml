@@ -145,4 +145,44 @@
             android:text="Save to Favorites"
             android:textColor="@color/White" />
 
+        <TextView
+            android:id="@+id/cloudCover"
+            style="@style/myPadding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/windSpeed"
+            android:text="CloudCover"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/humidity"
+            style="@style/myPadding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/cloudCover"
+            android:text="Humidity"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/pressure"
+            style="@style/myPadding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:text="Pressure"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/visibility"
+            style="@style/myPadding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView2"
+            android:text="Visibility"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
     </RelativeLayout>
