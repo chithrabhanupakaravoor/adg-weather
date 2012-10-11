@@ -51,6 +51,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class MainActivity extends Activity implements LocationListener {
 
@@ -83,6 +84,9 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	EditText searchQueryCity;
 	EditText searchQueryCountry;
+	
+	boolean isF = true;
+	ToggleButton toggleFC;
 
 	
 	List<MyLocation> favoriteLocations = new LinkedList<MyLocation>();
@@ -174,6 +178,7 @@ public class MainActivity extends Activity implements LocationListener {
     	pressureText = (TextView) findViewById(R.id.pressure);
     	visibText = (TextView) findViewById(R.id.visibility);
     	windText = (TextView) findViewById(R.id.wind);
+    	toggleFC = (ToggleButton) findViewById(R.id.toggleButton1);
     	
         gpsButton = (Button) findViewById(R.id.gpsButton);
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
@@ -320,6 +325,16 @@ public class MainActivity extends Activity implements LocationListener {
 			editor.putString(key, coor);
 			editor.commit();
 			Toast.makeText(myContext, key+" added to favorites", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	public void onToggleClicked(View view){
+		boolean on = ((ToggleButton) view).isChecked();
+		
+		if(on){
+			isF = true;
+		}else{
+			isF = false;
 		}
 	}
 
@@ -743,6 +758,8 @@ public class MainActivity extends Activity implements LocationListener {
 	public void setView(ArrayList<Weather> fd, Weather c){
 		String maxF = fd.get(0).getMaxF();
 		String minF = fd.get(0).getMinF();
+		String maxC = fd.get(0).getMaxC();
+		String minC = fd.get(0).getMinC();
 		String cloudCover = curr.getCloudcover();
 		String humidity = curr.getHumidity();
 		String pressure = curr.getPressure();
@@ -750,7 +767,20 @@ public class MainActivity extends Activity implements LocationListener {
 		String windDir = curr.getWindPoint();
 		String windMph = curr.getMph();
 		String windKmph = curr.getKmph();
-		
+		String currF = curr.getF();
+		String currC = curr.getC();
+		String maxTemp;
+		String minTemp;
+		String currTemp;
+		if(isF){
+			maxTemp = maxF;
+			minTemp = minF;
+			currTemp= currF;
+		}else{
+			maxTemp = maxC;
+			minTemp = minC;
+			currTemp = currC;
+		}
 		//=====================================
 		favoriteLocations.clear();
 		LoadPreferences();
@@ -770,13 +800,13 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
 		descText.setText(c.getValue());
-		tempText.setText(c.getF() + "\u00B0 F");
+		tempText.setText(currTemp + "\u00B0 F");
 		precipText.setText("Precipitation: "+c.getPercip());
 		windSpeedText.setText("Wind Speed:"+c.getMph() + " mph");
 		//maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
 		//minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
-		maxText.setText("Max: "+maxF + "\u00B0 F  /");
-		minText.setText("  Min: "+minF + "\u00B0 F");
+		maxText.setText("Max: "+maxTemp + "\u00B0 F  /");
+		minText.setText("  Min: "+minTemp + "\u00B0 F");
 		
 		String weatherCode = c.getWeatherCode();
 		//Log.i("WEATHER CODE", ""+weatherCode);

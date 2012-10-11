@@ -86,6 +86,7 @@
             android:textSize="70sp" />
 
         <TableLayout
+            android:id="@+id/tableLayout1"
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
@@ -95,7 +96,7 @@
                 android:id="@+id/tableRow1"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp" >
-
+
                 <Button
                     android:id="@+id/saveLocButton"
                     android:layout_width="80dp"
@@ -104,7 +105,7 @@
                     android:background="@drawable/largeblackbutton"
                     android:text="Favorite Locations"
                     android:textColor="@color/White" />
-
+
                 <Button
                     android:id="@+id/gpsButton"
                     android:layout_width="80dp"
@@ -113,7 +114,7 @@
                     android:background="@drawable/largeblackbutton"
                     android:text="GPS"
                     android:textColor="@color/White" />
-
+
                 <Button
                     android:id="@+id/searchButton"
                     android:layout_width="80dp"
@@ -122,7 +123,7 @@
                     android:background="@drawable/largeblackbutton"
                     android:text="Search"
                     android:textColor="@color/White" />
-
+
                 <Button
                     android:id="@+id/button5Day"
                     android:layout_width="80dp"
@@ -131,7 +132,6 @@
                     android:background="@drawable/largeblackbutton"
                     android:text="@string/fiveday"
                     android:textColor="@color/White" />
-
             </TableRow>
         </TableLayout>
 
@@ -193,5 +193,15 @@
             android:layout_below="@+id/visibility"
             android:text="Wind"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/location"
+            android:layout_toLeftOf="@+id/saveToFaveButton"
+            android:textOn="F"
+            android:textOff="C"
+            android:onClick="onToggleClicked" />
 
     </RelativeLayout>
