@@ -240,6 +240,7 @@ public class MainActivity extends Activity implements LocationListener {
 				} 
 				else if(saveToFaveButton.getText().toString().equals("Remove from Favorites")){
 					doDeletion();
+					saveToFaveButton.setText("Save to Favorites");
 				}		
 			}
 		});
@@ -668,43 +669,40 @@ public class MainActivity extends Activity implements LocationListener {
 		@Override
 		protected Void doInBackground(Location... params) {
 
-//			Geocoder geocoder = new Geocoder(mContext);
-//
-//			//Log.i("GeoCoder", "Is present: "+geocoder.isPresent());
-//			
-//			Location loc = params[0];
-//			List<Address> addresses = null;
-//			try {
-//				// Call the synchronous getFromLocation() method by passing in
-//				
-//				// the lat/long values.
-//				
-//				//addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
-//				
-//				addresses = geocoder.getFromLocation(loc.getLatitude(),
-//						loc.getLongitude(), 1);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			if (addresses != null && addresses.size() > 0) {
-//				Address address = addresses.get(0);
-//				// Format the first line of address (if available), city, and
-//				// country name.
-//				addressText = String.format(
-//						"%s, %s, %s",
-//						address.getMaxAddressLineIndex() > 0 ? address
-//								.getAddressLine(0) : "", address.getLocality(),
-//						address.getCountryName());
-//
-//				city = address.getLocality();
-//				country = address.getCountryName();
-//				addressLine = address.getAddressLine(1);
-//				Log.i("Address Line", ""+addressLine);
-//				
-//			}
-			lat = 44;
-			lng = -88;
+			Geocoder geocoder = new Geocoder(mContext);
 
+			//Log.i("GeoCoder", "Is present: "+geocoder.isPresent());
+			
+			Location loc = params[0];
+			List<Address> addresses = null;
+			try {
+				// Call the synchronous getFromLocation() method by passing in
+				
+				// the lat/long values.
+				
+				//addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
+				
+				addresses = geocoder.getFromLocation(loc.getLatitude(),
+						loc.getLongitude(), 1);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if (addresses != null && addresses.size() > 0) {
+				Address address = addresses.get(0);
+				// Format the first line of address (if available), city, and
+				// country name.
+				addressText = String.format(
+						"%s, %s, %s",
+						address.getMaxAddressLineIndex() > 0 ? address
+								.getAddressLine(0) : "", address.getLocality(),
+						address.getCountryName());
+
+				city = address.getLocality();
+				country = address.getCountryName();
+				addressLine = address.getAddressLine(1);
+				Log.i("Address Line", ""+addressLine);
+				
+			}
 			String url = URL_1 + lat + ".00," + lng + ".00" + URL_2 + API_KEY;
 
 			urlBundle.putString("URL", url);
