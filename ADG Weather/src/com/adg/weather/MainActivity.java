@@ -223,18 +223,18 @@ public class MainActivity extends Activity implements LocationListener {
 			}
 		});
          
-        
-
-        
-
-        
         saveToFaveButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
-				String key = addressLine;
-				//String vals = ""+lng+"~"+lat+"~"+country;
-				String vals = favoriteUrl;
-				Log.i("Saving Location", key+" URL: "+vals);
-				SavePreferences(key,vals);
+				if(saveToFaveButton.getText().toString().equals("Save to Favorites")) {
+					String key = addressLine;
+					//String vals = ""+lng+"~"+lat+"~"+country;
+					String vals = favoriteUrl;
+					Log.i("Saving Location", key+" URL: "+vals);
+					SavePreferences(key,vals);
+				} 
+				else if(saveToFaveButton.getText().toString().equals("Remove from Favorites")){
+					doDeletion();
+				}		
 			}
 		});
         
@@ -714,6 +714,24 @@ public class MainActivity extends Activity implements LocationListener {
 		}
 	}
 	
+	
+	public void doDeletion() {
+		favoriteLocations.clear();
+		LoadPreferences();
+        for(int j = 0; j < favoriteLocations.size(); j++) {
+        	Log.i("", ""+favoriteLocations.get(j).getAddress());
+        	String comp = favoriteLocations.get(j).getAddress();
+        	if(addressLine.equals(comp)) {
+        		Log.i("", ""+comp+" exists in favorites and is to be deleted");
+        		deleteSavedLocation(comp);
+        		Log.i("Deletion", comp+" deleted");
+        		saveToFaveButton.setText("Save to Favorites");
+        	}
+        }
+        favoriteLocations.clear();
+	}
+	
+	
 	public void setView(ArrayList<Weather> fd, Weather c){
 		String maxF = fd.get(0).getMaxF();
 		String minF = fd.get(0).getMinF();
@@ -722,6 +740,22 @@ public class MainActivity extends Activity implements LocationListener {
 		String pressure = curr.getPressure();
 		String visibility = curr.getVisibility();
 		
+		//=====================================
+		favoriteLocations.clear();
+		LoadPreferences();
+        for(int j = 0; j < favoriteLocations.size(); j++) {
+        	Log.i("", ""+favoriteLocations.get(j).getAddress());
+        	String comp = favoriteLocations.get(j).getAddress();
+        	if(addressLine.equals(comp)) {
+        		//Log.i("", ""+comp+" exists in favorites and is to be deleted");
+        		//deleteSavedLocation(comp);
+        		//Log.i("Deletion", comp+" deleted");
+        		saveToFaveButton.setText("Remove from Favorites");
+        		break;
+        	}
+        }
+        favoriteLocations.clear();
+		//=====================================
 		
 		//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
 		descText.setText(c.getValue());
