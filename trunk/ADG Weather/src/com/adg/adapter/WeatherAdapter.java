@@ -20,10 +20,12 @@ public class WeatherAdapter extends BaseAdapter {
 	
 	Context context;
 	ArrayList<Weather> fiveDay = new ArrayList<Weather>();
+	Boolean isF;
 
-	public WeatherAdapter(Context c, ArrayList<Weather> f){
+	public WeatherAdapter(Context c, ArrayList<Weather> f, Boolean isF){
 		this.context = c;
 		this.fiveDay = f;
+		this.isF = isF;
 	}
 	public int getCount() {
 		return fiveDay.size();
@@ -108,10 +110,17 @@ public class WeatherAdapter extends BaseAdapter {
 		DateFinder df = new DateFinder();
 		String dow = df.dayOfWeek(date);
 		
+		String currTemp;
 		
 		d.setText(dow+", "+day+" "+m1+", "+year);
 		
-		temp.setText(fiveDay.get(arg0).getMaxF() +"\u00B0 F  /  " + fiveDay.get(arg0).getMinF()+ "\u00B0 F");
+		if(isF){
+			currTemp = fiveDay.get(arg0).getMaxF() +"\u00B0 F  /  " + fiveDay.get(arg0).getMinF()+ "\u00B0 F";
+		}else{
+			currTemp = fiveDay.get(arg0).getMaxC() +"\u00B0 C  /  " + fiveDay.get(arg0).getMinC()+ "\u00B0 C";
+		}
+		
+		temp.setText(currTemp);
 		val.setText(fiveDay.get(arg0).getValue());
 		
 		

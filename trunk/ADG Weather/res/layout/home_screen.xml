@@ -193,15 +193,16 @@
             android:layout_below="@+id/visibility"
             android:text="Wind"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
         <ToggleButton
             android:id="@+id/toggleButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/location"
             android:layout_toLeftOf="@+id/saveToFaveButton"
-            android:textOn="F"
+            android:checked="true"
+            android:onClick="onToggleClicked"
             android:textOff="C"
-            android:onClick="onToggleClicked" />
+            android:textOn="F" />
 
     </RelativeLayout>

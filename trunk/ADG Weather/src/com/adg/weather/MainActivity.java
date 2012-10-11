@@ -337,6 +337,7 @@ public class MainActivity extends Activity implements LocationListener {
 			isF = false;
 		}
 		setView(fiveDay, curr);
+		urlBundle.putBoolean("isF", isF);
 	}
 
 	private void deleteSavedLocation(String address) {
@@ -667,40 +668,42 @@ public class MainActivity extends Activity implements LocationListener {
 		@Override
 		protected Void doInBackground(Location... params) {
 
-			Geocoder geocoder = new Geocoder(mContext);
-
-			//Log.i("GeoCoder", "Is present: "+geocoder.isPresent());
-			
-			Location loc = params[0];
-			List<Address> addresses = null;
-			try {
-				// Call the synchronous getFromLocation() method by passing in
-				
-				// the lat/long values.
-				
-				//addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
-				
-				addresses = geocoder.getFromLocation(loc.getLatitude(),
-						loc.getLongitude(), 1);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			if (addresses != null && addresses.size() > 0) {
-				Address address = addresses.get(0);
-				// Format the first line of address (if available), city, and
-				// country name.
-				addressText = String.format(
-						"%s, %s, %s",
-						address.getMaxAddressLineIndex() > 0 ? address
-								.getAddressLine(0) : "", address.getLocality(),
-						address.getCountryName());
-
-				city = address.getLocality();
-				country = address.getCountryName();
-				addressLine = address.getAddressLine(1);
-				Log.i("Address Line", ""+addressLine);
-				
-			}
+//			Geocoder geocoder = new Geocoder(mContext);
+//
+//			//Log.i("GeoCoder", "Is present: "+geocoder.isPresent());
+//			
+//			Location loc = params[0];
+//			List<Address> addresses = null;
+//			try {
+//				// Call the synchronous getFromLocation() method by passing in
+//				
+//				// the lat/long values.
+//				
+//				//addressSearchList = geocoder.getFromLocationName("Palatine, IL, USA", 10);
+//				
+//				addresses = geocoder.getFromLocation(loc.getLatitude(),
+//						loc.getLongitude(), 1);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			if (addresses != null && addresses.size() > 0) {
+//				Address address = addresses.get(0);
+//				// Format the first line of address (if available), city, and
+//				// country name.
+//				addressText = String.format(
+//						"%s, %s, %s",
+//						address.getMaxAddressLineIndex() > 0 ? address
+//								.getAddressLine(0) : "", address.getLocality(),
+//						address.getCountryName());
+//
+//				city = address.getLocality();
+//				country = address.getCountryName();
+//				addressLine = address.getAddressLine(1);
+//				Log.i("Address Line", ""+addressLine);
+//				
+//			}
+			lat = 44;
+			lng = -88;
 
 			String url = URL_1 + lat + ".00," + lng + ".00" + URL_2 + API_KEY;
 
@@ -774,13 +777,13 @@ public class MainActivity extends Activity implements LocationListener {
 		String minTemp;
 		String currTemp;
 		if(isF){
-			maxTemp = maxF;
-			minTemp = minF;
-			currTemp= currF;
+			maxTemp = maxF+ "\u00B0 F";
+			minTemp = minF+ "\u00B0 F";
+			currTemp= currF+ "\u00B0 F";
 		}else{
-			maxTemp = maxC;
-			minTemp = minC;
-			currTemp = currC;
+			maxTemp = maxC+ "\u00B0 C";
+			minTemp = minC+ "\u00B0 C";
+			currTemp = currC+ "\u00B0 C";
 		}
 		//=====================================
 		favoriteLocations.clear();
@@ -801,13 +804,13 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
 		descText.setText(c.getValue());
-		tempText.setText(currTemp + "\u00B0 F");
+		tempText.setText(currTemp);
 		precipText.setText("Precipitation: "+c.getPercip());
 		windSpeedText.setText("Wind Speed:"+c.getMph() + " mph");
 		//maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
 		//minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
-		maxText.setText("Max: "+maxTemp + "\u00B0 F  /");
-		minText.setText("  Min: "+minTemp + "\u00B0 F");
+		maxText.setText("Max: "+maxTemp + "  /");
+		minText.setText("  Min: "+minTemp);
 		
 		String weatherCode = c.getWeatherCode();
 		//Log.i("WEATHER CODE", ""+weatherCode);
@@ -818,8 +821,11 @@ public class MainActivity extends Activity implements LocationListener {
     	humidityText.setText("Humidity: "+humidity);
     	pressureText.setText("Pressure: "+pressure);
     	visibText.setText("Visibility; "+visibility);
-		windText.setText("The wind is blowing "+windDir+" at "+ windMph +" mph");
-		
+    	if(windMph.equals("0")){
+    		windText.setText("there is little to no wind today");
+    	}else{
+    		windText.setText("The wind is blowing "+windDir+" at "+ windMph +" mph");
+    	}
 		showViews();
 		messageHandler.sendEmptyMessage(0);
 	}

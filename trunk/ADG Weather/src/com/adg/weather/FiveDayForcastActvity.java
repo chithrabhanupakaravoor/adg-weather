@@ -29,6 +29,7 @@ public class FiveDayForcastActvity extends Activity{
 	TextView cityText;
 	ListView lv;
 	String address;
+	Boolean isF;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class FiveDayForcastActvity extends Activity{
 		cityText = (TextView) findViewById(R.id.fiveDayCity);
 		url = urlBundle.getString("URL");
 		address = urlBundle.getString("Address");
+		isF = urlBundle.getBoolean("isF");
+		Log.i("isF in fiveDay", ""+isF);
 		dw = new DownloadWeather(getApplicationContext());
 		dw.execute((Integer)null);
 	}
@@ -68,8 +71,9 @@ public class FiveDayForcastActvity extends Activity{
 		protected void onPostExecute(Object result) {
 			super.onPostExecute(result);
 			lv = (ListView) findViewById(R.id.fiveDayList);
-			rapter = new WeatherAdapter(getApplicationContext(), fiveDay);
+			rapter = new WeatherAdapter(getApplicationContext(), fiveDay, isF);
 			lv.setAdapter(rapter);
+			setView(address);
 			Log.i("FiveDayForcast", "rapter set");
 			lv.setOnItemClickListener(new OnItemClickListener(){
 					public void onItemClick(AdapterView<?> arg0, View arg1,
@@ -81,7 +85,6 @@ public class FiveDayForcastActvity extends Activity{
 						startActivity(in);
 					}
 			});
-			setView(address);
 		}
 		
 		@Override
