@@ -336,6 +336,7 @@ public class MainActivity extends Activity implements LocationListener {
 		}else{
 			isF = false;
 		}
+		setView(fiveDay, curr);
 	}
 
 	private void deleteSavedLocation(String address) {
