@@ -63,16 +63,6 @@ public class SearchLocationActivity extends Activity {
 			}
 		});
 		
-		city.setOnKeyListener(new OnKeyListener(){
-			public boolean onKey(View v, int keyCode, KeyEvent event){
-				if((event.getAction() ==  KeyEvent.ACTION_DOWN) && 
-						(keyCode == KeyEvent.KEYCODE_ENTER)){
-					getText(v);
-					return true;
-				}
-				return false;
-			}
-		});
 		zip.setOnKeyListener(new OnKeyListener(){
 			public boolean onKey(View v, int keyCode, KeyEvent event){
 				if((event.getAction() ==  KeyEvent.ACTION_DOWN) && 
@@ -83,6 +73,17 @@ public class SearchLocationActivity extends Activity {
 				return false;
 			}
 		});
+		city.setOnKeyListener(new OnKeyListener(){
+			public boolean onKey(View v, int keyCode, KeyEvent event){
+				if((event.getAction() ==  KeyEvent.ACTION_DOWN) && 
+						(keyCode == KeyEvent.KEYCODE_ENTER)){
+					getText(v);
+					return true;
+				}
+				return false;
+			}
+		});
+		
 	}
 	
 	public void getText(View view){
@@ -99,7 +100,10 @@ public class SearchLocationActivity extends Activity {
 			setResult(2, in);
 			finish();	
 		}else{
-			lookingForCity LFC = new lookingForCity(context, view, city.getText().toString());
+			String cityString = city.getText().toString();
+			cityString = cityString.trim();
+			cityString = cityString.replace(" ", "%20");
+			lookingForCity LFC = new lookingForCity(context, view, cityString);
 			LFC.execute((Integer)null);
 		}		
 	}
