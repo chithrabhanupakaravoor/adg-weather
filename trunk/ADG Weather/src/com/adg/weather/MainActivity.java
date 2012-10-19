@@ -803,7 +803,7 @@ public class MainActivity extends Activity implements LocationListener {
 		//Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
 		descText.setText(c.getValue());
 		tempText.setText(currTemp);
-		precipText.setText("Precipitation: "+c.getPercip());
+		precipText.setText("Precipitation: "+c.getPercip()+ "mm");
 		windSpeedText.setText("Wind Speed:"+c.getMph() + " mph");
 		//maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
 		//minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
@@ -815,10 +815,10 @@ public class MainActivity extends Activity implements LocationListener {
 		WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
 		cityText.setText(addressLine);
 		iv.setImageResource(wc.getDrawableIcon());
-		cloudText.setText("Cloud Cover: "+cloudCover);
-    	humidityText.setText("Humidity: "+humidity);
-    	pressureText.setText("Pressure: "+pressure);
-    	visibText.setText("Visibility; "+visibility);
+		cloudText.setText("Cloud Cover: "+cloudCover+"%");
+    	humidityText.setText("Humidity: "+humidity+"%");
+    	pressureText.setText("Pressure: "+pressure + " mb");
+    	visibText.setText("Visibility; "+visibility+" km");
     	if(windMph.equals("0")){
     		windText.setText("there is little to no wind today");
     	}else{

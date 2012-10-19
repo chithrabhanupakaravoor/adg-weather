@@ -204,7 +204,7 @@
             android:layout_below="@+id/saveToFaveButton"
             android:layout_marginTop="5dp"
             android:onClick="onToggleClicked"
-            android:textOff="C"
-            android:textOn="F" />
+            android:textOff="F"
+            android:textOn="C" />
 
     </RelativeLayout>
