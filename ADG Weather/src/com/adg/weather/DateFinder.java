@@ -6,8 +6,10 @@ import android.util.Log;
 
 public class DateFinder {
 	
+	public DateFinder() {}
+	
 	public String dayOfWeek(String date){
-		String dayIs = "";
+		String dayIs = "fail";
 		String line = date;
 		String[] parts = line.split("-");
 		for(int i = 0; i < parts.length; i++){
