@@ -34,6 +34,7 @@ public class SearchParsingHandler {
 	String query = "&query=";
 	String end = "&num_of_results=3&format=json";
 	String location = "";
+	private static String url;
 	ArrayList<SearchObj> so = new ArrayList<SearchObj>();
 	
 	public SearchParsingHandler(){
@@ -48,8 +49,8 @@ public class SearchParsingHandler {
 			Log.i("USER ERROR", "Initilize the Location");
 		}
 		else {
-			String url = start + key + query + location + end;
-			Log.i("Search url", url);
+			setUrl(start + key + query + location + end);
+			Log.i("Search url", getUrl());
 			JSONparser jParser;
 			JSONObject json;
 			JSONObject search;
@@ -57,7 +58,7 @@ public class SearchParsingHandler {
 			jParser = new JSONparser();
 			search = null;
 			
-			json = jParser.getJSONFromUrl(url);
+			json = jParser.getJSONFromUrl(getUrl());
 			try{
 				search = json.getJSONObject(SEARCH_API);
 				JSONArray result = search.getJSONArray(RESULT);
@@ -129,6 +130,14 @@ public class SearchParsingHandler {
 
 	public void setSo(ArrayList<SearchObj> so) {
 		this.so = so;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		SearchParsingHandler.url = url;
 	}
 	
 }
