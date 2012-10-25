@@ -1,5 +1,6 @@
 package com.adg.parser;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,24 +17,24 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-public class JSONparser {
-	/*
-	 * String key = "845adebec4142346121409";
-	 * String longLat = "http://free.worldweatheronline.com/feed/weather.ashx?q=[lat],[lon]&format=json&num_of_days=5&key=";
-	 * String zip ="http://free.worldweatheronline.com/feed/weather.ashx?q=[Zipcode]&format=json&num_of_days=5&key=";
-	 * String city = "http://free.worldweatheronline.com/feed/weather.ashx?q=[city]%2c+[state],[contry]&format=json&num_of_days=5&key=";
-	 * String ip = "http://free.worldweatheronline.com/feed/weather.ashx?q=[ip]&format=json&num_of_days=5&key=";
-	 */
-	static InputStream inputStream = null;
-	static JSONObject jObj = null;
-	static String json = "";
-	
-	public JSONparser() {
-		
-	}
 
-	public JSONObject getJSONFromUrl(String url) {
-		//Log.i("URL", url);
+public class JSONparser {
+
+    /*
+     * String key = "845adebec4142346121409";
+     * String longLat = "http://free.worldweatheronline.com/feed/weather.ashx?q=[lat],[lon]&format=json&num_of_days=5&key=";
+     * String zip ="http://free.worldweatheronline.com/feed/weather.ashx?q=[Zipcode]&format=json&num_of_days=5&key=";
+     * String city = "http://free.worldweatheronline.com/feed/weather.ashx?q=[city]%2c+[state],[contry]&format=json&num_of_days=5&key=";
+     * String ip = "http://free.worldweatheronline.com/feed/weather.ashx?q=[ip]&format=json&num_of_days=5&key=";
+     */
+    static InputStream inputStream = null;
+    static JSONObject jObj = null;
+    static String json = "";
+	
+    public JSONparser() {}
+
+    public JSONObject getJSONFromUrl(String url) {
+        // Log.i("URL", url);
         // Making HTTP request
         try {
             // defaultHttpClient
@@ -42,6 +43,7 @@ public class JSONparser {
  
             HttpResponse httpResponse = httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
+
             inputStream = httpEntity.getContent();           
  
         } catch (UnsupportedEncodingException e) {
@@ -53,14 +55,16 @@ public class JSONparser {
         }
  
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(inputStream));
             StringBuilder sb = new StringBuilder();
             String line = null;
+
             while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");
             }
             inputStream.close();
-            //Log.i("RESULT", sb.toString());
+            // Log.i("RESULT", sb.toString());
             json = sb.toString();
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
