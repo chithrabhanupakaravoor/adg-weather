@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar" />
     <style name="myPadding">
         <item name="android:paddingLeft">5dp</item>
         <item name="android:typeface">sans</item>
