@@ -37,7 +37,7 @@ public class OneDayActivity extends Activity {
 			wind.setText("There will be no wind.");
 		}else{
 			wind.setText("The wind will blow " + bundle.getString("WindPoint") 
-		    + " at about" + bundle.getString("Mph")+" mph");
+		    + " at about " + bundle.getString("Mph")+" mph");
 		}
 		value.setImageResource(wc.getDrawableIcon());
 		

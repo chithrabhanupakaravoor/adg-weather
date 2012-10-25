@@ -14,6 +14,11 @@ import com.adg.location.MyLocation;
 import com.adg.object.Weather;
 import com.adg.parser.ParsingHandler;
 import com.adg.search.WeatherSearch;
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
 
 import android.location.Address;
 import android.location.Criteria;
@@ -63,12 +68,13 @@ public class MainActivity extends Activity implements LocationListener {
 	public static final String URL_1 = "http://free.worldweatheronline.com/feed/weather.ashx?q=";
 	public static final String URL_2 = "&format=json&num_of_days=5&key=";
 	
+	public static final String FACEBOOK_APP_ID = "399359630137899";
 	
 	TextView descText;
 	TextView cityText;
 	TextView tempText;
 	TextView precipText;
-	TextView windSpeedText;
+	
 	TextView maxText;
 	TextView minText;
 	TextView cloudText;
@@ -81,6 +87,7 @@ public class MainActivity extends Activity implements LocationListener {
 	Button gpsButton;
 	Button savedLocButton;
 	Button saveToFaveButton;
+	Button facebookButton;
 	
 	EditText searchQueryCity;
 	EditText searchQueryCountry;
@@ -170,7 +177,6 @@ public class MainActivity extends Activity implements LocationListener {
         cityText = (TextView) findViewById(R.id.location);
         tempText = (TextView) findViewById(R.id.temp);
         precipText = (TextView) findViewById(R.id.precip);
-        windSpeedText = (TextView) findViewById(R.id.windSpeed);
         maxText = (TextView) findViewById(R.id.maxTextView);
         minText = (TextView) findViewById(R.id.minTextView);
         cloudText = (TextView) findViewById(R.id.cloudCover);
@@ -179,6 +185,10 @@ public class MainActivity extends Activity implements LocationListener {
     	visibText = (TextView) findViewById(R.id.visibility);
     	windText = (TextView) findViewById(R.id.wind);
     	toggleFC = (ToggleButton) findViewById(R.id.toggleButton1);
+    	facebookButton = (Button) findViewById(R.id.facebookButton);
+    	
+    	
+    	
     	
         gpsButton = (Button) findViewById(R.id.gpsButton);
         savedLocButton = (Button) findViewById(R.id.saveLocButton);
@@ -186,7 +196,7 @@ public class MainActivity extends Activity implements LocationListener {
         searchButton = (Button) findViewById(R.id.searchButton);
         saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
         
-
+        
         
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilder.setTitle("Do you want to enable GPS");
@@ -222,6 +232,26 @@ public class MainActivity extends Activity implements LocationListener {
 		});
            
         
+        facebookButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View view){
+				Facebook facebook = new Facebook(FACEBOOK_APP_ID);
+			    AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook); 
+			    
+			    
+			    facebook.authorize(MainActivity.this, new DialogListener() {
+		            public void onComplete(Bundle values) {}
+
+		            public void onFacebookError(FacebookError error) {}
+
+		            public void onError(DialogError e) {}
+
+		            public void onCancel() {}
+		
+		        });
+			}
+		});
+        
+        
         searchButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View view){
 				Intent in = new Intent(MainActivity.this, SearchLocationActivity.class);
@@ -237,6 +267,7 @@ public class MainActivity extends Activity implements LocationListener {
 					String vals = favoriteUrl;
 					Log.i("Saving Location", key+" URL: "+vals);
 					SavePreferences(key,vals);
+					saveToFaveButton.setText("Remove from Favorites");
 				} 
 				else if(saveToFaveButton.getText().toString().equals("Remove from Favorites")){
 					doDeletion();
@@ -417,6 +448,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void onProviderDisabled(String provider) {
       Toast.makeText(this, "Disabled provider " + provider,
           Toast.LENGTH_SHORT).show();
+      finish();
     }
    
     
@@ -458,7 +490,7 @@ public class MainActivity extends Activity implements LocationListener {
     	cityText.setVisibility(View.GONE);
     	tempText.setVisibility(View.GONE);
     	precipText.setVisibility(View.GONE);
-    	windSpeedText.setVisibility(View.GONE);
+    	
     	maxText.setVisibility(View.GONE);
     	minText.setVisibility(View.GONE);
     	iv.setVisibility(View.GONE);
@@ -475,7 +507,7 @@ public class MainActivity extends Activity implements LocationListener {
     	cityText.setVisibility(View.VISIBLE);
     	tempText.setVisibility(View.VISIBLE);
     	precipText.setVisibility(View.VISIBLE);
-    	windSpeedText.setVisibility(View.VISIBLE);
+    	
     	maxText.setVisibility(View.VISIBLE);
     	minText.setVisibility(View.VISIBLE);
     	iv.setVisibility(View.VISIBLE);
@@ -686,7 +718,10 @@ public class MainActivity extends Activity implements LocationListener {
 						loc.getLongitude(), 1);
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (NullPointerException npe) {
+				npe.printStackTrace();
 			}
+			
 			if (addresses != null && addresses.size() > 0) {
 				Address address = addresses.get(0);
 				// Format the first line of address (if available), city, and
@@ -758,31 +793,84 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	
 	public void setView(ArrayList<Weather> fd, Weather c){
-		String maxF = fd.get(0).getMaxF();
-		String minF = fd.get(0).getMinF();
-		String maxC = fd.get(0).getMaxC();
-		String minC = fd.get(0).getMinC();
-		String cloudCover = curr.getCloudcover();
-		String humidity = curr.getHumidity();
-		String pressure = curr.getPressure();
-		String visibility = curr.getVisibility();
-		String windDir = curr.getWindPoint();
-		String windMph = curr.getMph();
-		String windKmph = curr.getKmph();
-		String currF = curr.getF();
-		String currC = curr.getC();
-		String maxTemp;
-		String minTemp;
-		String currTemp;
-		if(isF){
-			maxTemp = maxF+ "\u00B0 F";
-			minTemp = minF+ "\u00B0 F";
-			currTemp= currF+ "\u00B0 F";
-		}else{
-			maxTemp = maxC+ "\u00B0 C";
-			minTemp = minC+ "\u00B0 C";
-			currTemp = currC+ "\u00B0 C";
+		if (fd.size() > 0) {
+			String maxF = fd.get(0).getMaxF();
+			String minF = fd.get(0).getMinF();
+			String maxC = fd.get(0).getMaxC();
+			String minC = fd.get(0).getMinC();
+			String cloudCover = curr.getCloudcover();
+			String humidity = curr.getHumidity();
+			String pressure = curr.getPressure();
+			String visibility = curr.getVisibility();
+			String windDir = curr.getWindPoint();
+			String windMph = curr.getMph();
+			String windKmph = curr.getKmph();
+			String currF = curr.getF();
+			String currC = curr.getC();
+			String maxTemp;
+			String minTemp;
+			String currTemp;
+			if (isF) {
+				maxTemp = maxF + "\u00B0 F";
+				minTemp = minF + "\u00B0 F";
+				currTemp = currF + "\u00B0 F";
+			} else {
+				maxTemp = maxC + "\u00B0 C";
+				minTemp = minC + "\u00B0 C";
+				currTemp = currC + "\u00B0 C";
+			}
+			// =====================================
+			favoriteLocations.clear();
+			LoadPreferences();
+			for (int j = 0; j < favoriteLocations.size(); j++) {
+				Log.i("", "" + favoriteLocations.get(j).getAddress());
+				String comp = favoriteLocations.get(j).getAddress();
+				if (addressLine.equals(comp)) {
+					// Log.i("",
+					// ""+comp+" exists in favorites and is to be deleted");
+					// deleteSavedLocation(comp);
+					// Log.i("Deletion", comp+" deleted");
+					saveToFaveButton.setText("Remove from Favorites");
+					break;
+				} else {
+					saveToFaveButton.setText("Save to Favorites");
+				}
+			}
+			favoriteLocations.clear();
+			// =====================================
+
+			// Log.i("COORDINATES","Long: "+lng +"Lat: "+lat);
+			descText.setText(c.getValue());
+			tempText.setText(currTemp);
+			precipText.setText("Precipitation: " + c.getPercip());
+			
+			// maxText.setText("Max: "+curr.getMaxF() + "\u00B0 F");
+			// minText.setText("Min: "+curr.getMinF() + "\u00B0 F");
+			maxText.setText("Max: " + maxTemp + "  /");
+			minText.setText("  Min: " + minTemp);
+
+			String weatherCode = c.getWeatherCode();
+			// Log.i("WEATHER CODE", ""+weatherCode);
+			WeatherCode wc = new WeatherCode(Integer.parseInt(weatherCode));
+			cityText.setText(addressLine);
+			iv.setImageResource(wc.getDrawableIcon());
+			cloudText.setText("Cloud Cover: " + cloudCover);
+			humidityText.setText("Humidity: " + humidity);
+			pressureText.setText("Pressure: " + pressure);
+			visibText.setText("Visibility: " + visibility);
+			if (windMph.equals("0")) {
+				windText.setText("there is little to no wind today");
+			} else {
+				windText.setText("The wind is blowing " + windDir + " at "
+						+ windMph + " mph");
+			}
+			showViews();
+			messageHandler.sendEmptyMessage(0);
 		}
+/*		
+<<<<<<< .mine
+
+=======
 		//=====================================
 		favoriteLocations.clear();
 		LoadPreferences();
@@ -826,7 +914,8 @@ public class MainActivity extends Activity implements LocationListener {
     	}
 		showViews();
 		messageHandler.sendEmptyMessage(0);
-	}
-	
+>>>>>>> .r64
+*/
 
+	}
 }

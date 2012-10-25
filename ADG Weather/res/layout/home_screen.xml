@@ -3,14 +3,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/LightBlue" >
-
+
         <TextView
             android:id="@+id/location"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-
             android:background="@color/SteelBlue"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -24,7 +24,7 @@
             android:layout_below="@+id/location"
             android:layout_marginLeft="5dp"
             android:src="@drawable/lightning128" />
-
+
         <TextView
             android:id="@+id/descrip"
             style="@style/myPadding"
@@ -32,8 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/weatherIcon"
-            android:text="Medium Text"
+            android:text="description"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/BlueViolet"
             android:textSize="24sp" />
 
         <TextView
@@ -43,17 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/descrip"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/windSpeed"
-            style="@style/myPadding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/precip"
-            android:text="Medium Text"
+            android:text="precipitation"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -140,8 +131,8 @@
             android:id="@+id/saveToFaveButton"
             android:layout_width="80dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_above="@+id/tableLayout1"
+            android:layout_alignParentLeft="true"
             android:background="@drawable/largeblackbutton"
             android:text="Save to Favorites"
             android:textColor="@color/White" />
@@ -152,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/windSpeed"
+            android:layout_below="@+id/precip"
             android:text="CloudCover"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -167,44 +158,54 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/pressure"
-            style="@style/myPadding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/humidity"
-            android:text="Pressure"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
             android:id="@+id/visibility"
             style="@style/myPadding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/pressure"
+            android:layout_below="@+id/humidity"
             android:text="Visibility"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/pressure"
+            style="@style/myPadding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/visibility"
+            android:text="Pressure"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/wind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/visibility"
+            android:layout_alignLeft="@+id/weatherIcon"
+            android:layout_below="@+id/pressure"
             android:text="Wind"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ToggleButton
             android:id="@+id/toggleButton1"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/tableLayout1"
+            android:layout_toRightOf="@+id/saveToFaveButton"
+            android:background="@drawable/largeblackbutton"
+            android:onClick="onToggleClicked"
+            android:textColor="@color/White"
+            android:textOff="Celcius"
+            android:textOn="Fahrenheit" />
+
+        <Button
+            android:id="@+id/facebookButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/saveToFaveButton"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/saveToFaveButton"
-            android:layout_marginTop="5dp"
-            android:onClick="onToggleClicked"
-            android:textOff="F"
-            android:textOn="C" />
+            android:layout_above="@+id/saveToFaveButton"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/share_facebook_button"
+            android:text=" " />
+
 
     </RelativeLayout>
