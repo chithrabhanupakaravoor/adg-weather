@@ -18,7 +18,7 @@ public class DateFinderTest extends TestCase {
 		super.setUp();
 		
 		dateFinder = new DateFinder();
-		dateValid = "09-10-2010";
+		dateValid = "2010-09-10";
 		dateInvalid = null;
 		
 	}
@@ -30,7 +30,7 @@ public class DateFinderTest extends TestCase {
 	
 
 	public void testDayOfWeek() {
-		assertEquals(daysOfWeek[0], dateFinder.dayOfWeek(dateValid));
+		assertEquals(daysOfWeek[3], dateFinder.dayOfWeek(dateValid));
 		
 	}
 }
