@@ -15,11 +15,11 @@ import com.adg.location.MyLocation;
 import com.adg.object.Weather;
 import com.adg.parser.ParsingHandler;
 import com.adg.search.WeatherSearch;
-import com.facebook.android.AsyncFacebookRunner;
-import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.Facebook.DialogListener;
-import com.facebook.android.FacebookError;
+//import com.facebook.android.AsyncFacebookRunner;
+//import com.facebook.android.DialogError;
+//import com.facebook.android.Facebook;
+//import com.facebook.android.Facebook.DialogListener;
+//import com.facebook.android.FacebookError;
 
 import android.location.Address;
 import android.location.Criteria;
@@ -230,26 +230,27 @@ public class MainActivity extends Activity implements LocationListener {
             }
         });
            
-        facebookButton.setOnClickListener(
-                new OnClickListener() {
-            public void onClick(View view) {
-                Facebook facebook = new Facebook(FACEBOOK_APP_ID);
-                AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(
-                        facebook); 
-			    
-                facebook.authorize(MainActivity.this, new DialogListener() {
-                    public void onComplete(Bundle values) {}
 
-                    public void onFacebookError(FacebookError error) {}
-
-                    public void onError(DialogError e) {}
-
-                    public void onCancel() {}
-		
-                });
-            }
-        });
         
+//        facebookButton.setOnClickListener(new OnClickListener(){
+//			public void onClick(View view){
+//				Facebook facebook = new Facebook(FACEBOOK_APP_ID);
+//			    AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook); 
+//			    
+//			    
+//			    facebook.authorize(MainActivity.this, new DialogListener() {
+//		            public void onComplete(Bundle values) {}
+//
+//		            public void onFacebookError(FacebookError error) {}
+//
+//		            public void onError(DialogError e) {}
+//
+//		            public void onCancel() {}
+//		
+//		        });
+//			}
+//		});
+  
         searchButton.setOnClickListener(
                 new OnClickListener() {
             public void onClick(View view) {
