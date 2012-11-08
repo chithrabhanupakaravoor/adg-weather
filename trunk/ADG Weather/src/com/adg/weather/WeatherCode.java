@@ -3,7 +3,7 @@ package com.adg.weather;
 
 public class WeatherCode {
 	
-    int code;
+    private int code;
 	
     public WeatherCode() {
         code = 0;
@@ -13,7 +13,15 @@ public class WeatherCode {
         this.code = code;
     }
 	
-    public int getDrawableIconSmall() {
+    public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public int getDrawableIconSmall() {
         int draw = 0;
         String desc = "";
 		
