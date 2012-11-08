@@ -3,8 +3,11 @@
     android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="7"/>
+        <!-- 
+        android:targetSdkVersion="16" 
+         -->
+        
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -46,6 +49,7 @@
     	    android:label="@layout/find_location">
     	    
     	</activity>
+    	<activity android:name="FavoritesActivity" android:label="@layout/favorite_locations"></activity>
     </application>
 
 </manifest>

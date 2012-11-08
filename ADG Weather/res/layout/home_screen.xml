@@ -24,7 +24,7 @@
             android:layout_below="@+id/location"
             android:layout_marginLeft="5dp"
             android:src="@drawable/lightning128" />
-
+
         <TextView
             android:id="@+id/descrip"
             style="@style/myPadding"
@@ -77,66 +77,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="70sp" />
 
-        <TableLayout
-            android:id="@+id/tableLayout1"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true" >
-
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="fill_parent"
-                android:layout_height="60dp" >
-
-                <Button
-                    android:id="@+id/saveLocButton"
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="fill"
-                    android:background="@drawable/largeblackbutton"
-                    android:text="Favorite Locations"
-                    android:textColor="@color/White" />
-
-                <Button
-                    android:id="@+id/gpsButton"
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="fill"
-                    android:background="@drawable/largeblackbutton"
-                    android:text="GPS"
-                    android:textColor="@color/White" />
-
-                <Button
-                    android:id="@+id/searchButton"
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="fill"
-                    android:background="@drawable/largeblackbutton"
-                    android:text="Search"
-                    android:textColor="@color/White" />
-
-                <Button
-                    android:id="@+id/button5Day"
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="fill"
-                    android:background="@drawable/largeblackbutton"
-                    android:text="@string/fiveday"
-                    android:textColor="@color/White" />
-            </TableRow>
-        </TableLayout>
-
-        <Button
-            android:id="@+id/saveToFaveButton"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_above="@+id/tableLayout1"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/largeblackbutton"
-            android:text="Save to Favorites"
-            android:textColor="@color/White" />
-
         <TextView
             android:id="@+id/cloudCover"
             style="@style/myPadding"
@@ -185,27 +125,29 @@
             android:layout_below="@+id/pressure"
             android:text="Wind"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
         <ToggleButton
             android:id="@+id/toggleButton1"
             android:layout_width="80dp"
             android:layout_height="50dp"
-            android:layout_above="@+id/tableLayout1"
-            android:layout_toRightOf="@+id/saveToFaveButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/largeblackbutton"
             android:onClick="onToggleClicked"
             android:textColor="@color/White"
-            android:textOff="Celcius"
-            android:textOn="Fahrenheit" />
+            
+            android:textOff="Fahrenheit"
+            android:textOn="Celcius" />
 
         <Button
-            android:id="@+id/facebookButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/saveToFaveButton"
+            android:id="@+id/saveToFaveButton"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/share_facebook_button"
-            android:text=" " />
-
+            android:layout_alignTop="@+id/toggleButton1"
+            android:background="@drawable/largeblackbutton"
+            android:text="Save to Favorites"
+            android:textColor="@color/White" />
 
     </RelativeLayout>

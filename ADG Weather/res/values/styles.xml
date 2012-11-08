@@ -1,9 +1,13 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar" />
+    <style name="AppTheme" parent="android:Theme.Light" />
     <style name="myPadding">
         <item name="android:paddingLeft">5dp</item>
         <item name="android:typeface">sans</item>
+    </style>
+    <style name="header">
+        <item name="android:background">@color/SteelBlue</item>
+        <item name="android:textColor">@color/Chartreuse</item>
     </style>
     
 

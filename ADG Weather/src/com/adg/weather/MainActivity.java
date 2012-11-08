@@ -46,12 +46,15 @@ import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -71,6 +74,12 @@ public class MainActivity extends Activity implements LocationListener {
     public static final String URL_2 = "&format=json&num_of_days=5&key=";
 	
     public static final String FACEBOOK_APP_ID = "399359630137899";
+    
+    
+    public static final int MENU_SEARCH = 1234;
+    public static final int MENU_GPS = 12345;
+    public static final int MENU_5_DAY = 123456;
+    public static final int MENU_FAV = 123;
 	
     TextView descText;
     TextView cityText;
@@ -91,6 +100,8 @@ public class MainActivity extends Activity implements LocationListener {
     Button saveToFaveButton;
     Button facebookButton;
 	
+    View contextView;
+    
     EditText searchQueryCity;
     EditText searchQueryCountry;
 	
@@ -164,6 +175,23 @@ public class MainActivity extends Activity implements LocationListener {
 
             searchTask.execute((Integer) null);
         }
+        if(resultCode == 3) { 
+        	Bundle bun = data.getExtras();
+        	String ads = bun.getString("address");
+        	
+        	String url = "";
+        	LoadPreferences();
+        	for(int j = 0; j < favoriteLocations.size(); j++) {
+        		if(ads.equals(favoriteLocations.get(j).getAddress())) {
+        			url = favoriteLocations.get(j).getUrlToParse();
+        		}
+        	}
+        	
+            FavParsTask favoriteParsingTask = new FavParsTask(getApplicationContext(), ads,
+                    url);
+
+            favoriteParsingTask.execute((Integer) null);
+        }
     }
 	
     @Override
@@ -189,17 +217,20 @@ public class MainActivity extends Activity implements LocationListener {
         visibText = (TextView) findViewById(R.id.visibility);
         windText = (TextView) findViewById(R.id.wind);
         toggleFC = (ToggleButton) findViewById(R.id.toggleButton1);
-        facebookButton = (Button) findViewById(R.id.facebookButton);
+        //facebookButton = (Button) findViewById(R.id.facebookButton);
     	
-        gpsButton = (Button) findViewById(R.id.gpsButton);
-        savedLocButton = (Button) findViewById(R.id.saveLocButton);
-        registerForContextMenu(savedLocButton);
-        searchButton = (Button) findViewById(R.id.searchButton);
+        //gpsButton = (Button) findViewById(R.id.gpsButton);
+        //savedLocButton = (Button) findViewById(R.id.saveLocButton);
+        //registerForContextMenu(savedLocButton);
+        //searchButton = (Button) findViewById(R.id.searchButton);
         saveToFaveButton = (Button) findViewById(R.id.saveToFaveButton);
         
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 MainActivity.this);
 
+        
+        
+        
         alertDialogBuilder.setTitle("Do you want to enable GPS");
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -216,7 +247,8 @@ public class MainActivity extends Activity implements LocationListener {
         
         // hide everything while loading
         hideViews();
-        
+      
+        /*
         Button fiveDayButton = (Button) findViewById(R.id.button5Day);
         
         fiveDayButton.setOnClickListener(
@@ -230,7 +262,7 @@ public class MainActivity extends Activity implements LocationListener {
             }
         });
            
-
+*/
         
 //        facebookButton.setOnClickListener(new OnClickListener(){
 //			public void onClick(View view){
@@ -251,6 +283,7 @@ public class MainActivity extends Activity implements LocationListener {
 //			}
 //		});
   
+       /* 
         searchButton.setOnClickListener(
                 new OnClickListener() {
             public void onClick(View view) {
@@ -260,7 +293,7 @@ public class MainActivity extends Activity implements LocationListener {
                 startActivityForResult(in, 1);
             }
         });
-         
+         */
         saveToFaveButton.setOnClickListener(
                 new OnClickListener() {
             public void onClick(View view) {
@@ -281,12 +314,14 @@ public class MainActivity extends Activity implements LocationListener {
             }
         });
         
+        /*
         savedLocButton.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 LoadPreferences();
                 openContextMenu(view);
             }
         });
+	*/
 
         locationManager = (LocationManager) getSystemService(
                 Context.LOCATION_SERVICE);
@@ -310,6 +345,8 @@ public class MainActivity extends Activity implements LocationListener {
             descText.setText("Location not available");
         }
 		
+        /*
+        
         Button GPS2 = (Button) findViewById(R.id.gpsButton);
 		
         GPS2.setOnClickListener(
@@ -338,6 +375,8 @@ public class MainActivity extends Activity implements LocationListener {
                 rgt.execute(location, null, null);
             }
         });
+        
+        */
         ReverseGeocodingTask rgt = new ReverseGeocodingTask(myContext);
 
         rgt.execute(location, null, null);
@@ -455,10 +494,77 @@ public class MainActivity extends Activity implements LocationListener {
     }
    
     @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+    	menu.add(0, MENU_SEARCH, 0, "Search");
+    	menu.add(0, MENU_GPS, 0, "GPS");
+    	menu.add(0, MENU_5_DAY, 0, "5 Day Forecast");
+    	menu.add(0, MENU_FAV, 0, "Favorite Locations");
+    	
+    	MenuItem mItem; 
+    	mItem = menu.getItem(0);
+    	mItem.setIcon(R.drawable.ic_action_search);
+    	
+		return super.onCreateOptionsMenu(menu);
+		
+		
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_SEARCH:
+			Intent in = new Intent(MainActivity.this,
+                    SearchLocationActivity.class);
+
+            startActivityForResult(in, 1);
+			break;
+		case MENU_GPS:
+			locationManager = (LocationManager) getSystemService(
+                    Context.LOCATION_SERVICE);
+            Criteria criteriaGPS = new Criteria();
+            provider = locationManager.getBestProvider(criteriaGPS, false);
+            location = locationManager.getLastKnownLocation(provider);
+			
+            ReverseGeocodingTask rgt = new ReverseGeocodingTask(
+                    getApplicationContext());
+            rgt.execute(location, null, null);
+
+			break;
+		case MENU_5_DAY:
+			Intent inte = new Intent(MainActivity.this,
+                    FiveDayForcastActvity.class);
+            inte.putExtras(urlBundle);
+            startActivity(inte);
+			break;
+		case MENU_FAV:
+			LoadPreferences();
+			
+			ArrayList<String> favs = new ArrayList<String>();
+			for(int i = 0; i < favoriteLocations.size(); i++) {
+				favs.add(favoriteLocations.get(i).getAddress());
+			}
+		
+			
+			Intent intent = new Intent(MainActivity.this, FavoritesActivity.class);
+			intent.putStringArrayListExtra("favs", favs);
+			
+			startActivityForResult(intent, 0);
+			
+			break;
+		default:
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 		
+        contextView = v;
+        
         menu.setHeaderTitle("Saved Locations"); 
         for (int j = 0; j < favoriteLocations.size(); j++) {
             menu.add(0, v.getId(), 0, favoriteLocations.get(j).getAddress());
@@ -668,6 +774,50 @@ public class MainActivity extends Activity implements LocationListener {
     	
     }
     
+    
+    public class FavoritesAdapter extends BaseAdapter {
+    	
+    	Context c;
+    	
+    	public FavoritesAdapter(Context cont) {
+    		this.c = cont;
+    	}
+
+		public int getCount() {
+			LoadPreferences();
+			
+			return favoriteLocations.size();
+		}
+
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		
+		View child;
+	    TextView location;
+		
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater li = (LayoutInflater) c
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			child = li.inflate(R.layout.favorite_item, null);
+			location = (TextView) child.findViewById(R.id.favoriteItemTextView);
+			
+			String text = favoriteLocations.get(position).getAddress();
+			
+			location.setText(text);
+			
+			return child;
+		}
+    	
+    }
 
     // AsyncTask encapsulating the reverse-geocoding API. Since the geocoder API
     // is blocked,
